@@ -25,10 +25,26 @@ class BlogFileTest extends \PHPUnit_Framework_TestCase {
 	 * @covers Stojg\Puny\BlogFile::getPosts
 	 */
 	public function testGetPosts() {
-		$this->assertEquals(7, count($this->object->getPosts()));
-		$this->assertEquals(7, count($this->object->getPosts(10)));
+		$this->assertEquals(6, count($this->object->getPosts()));
+		$this->assertEquals(6, count($this->object->getPosts(10)));
 		$this->assertEquals(5, count($this->object->getPosts(5)));
 	}
+
+	/**
+	 *
+	 */
+	public function testtestGetPostsIsSorted() {
+		$posts = $this->object->getPosts();
+
+		while(count($posts)>2) {
+			$first = array_shift($posts);
+			$last = array_pop($posts);
+			$this->assertGreaterThan($last->getDate('U'),$first->getDate('U'));
+		}
+		
+
+	}
+
 
 	/**
 	 * @covers Stojg\Puny\BlogFile::getPost

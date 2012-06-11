@@ -27,6 +27,7 @@ class BlogFile extends Blog {
 	public function __construct($directory) {
 		$this->directory = $directory;
 		$this->files = glob($this->directory.DIRECTORY_SEPARATOR.'*.md');
+		rsort($this->files);
 	}
 
 	/**
