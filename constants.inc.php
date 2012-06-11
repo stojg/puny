@@ -1,37 +1,33 @@
 <?php
 
 /**
- * Define system paths
+ * BASE_PATH represents the path on disk to this application
  */
 if(!defined('BASE_PATH')) {
-	// Assuming that this file is framework/core/Core.php we can then determine the base path
-	$candidateBasePath = rtrim(dirname(dirname(dirname(__FILE__))), DIRECTORY_SEPARATOR);
-	// We can't have an empty BASE_PATH.  Making it / means that double-slashes occur in places but that's benign.
+	$candidateBasePath = __DIR__;
 	// This likely only happens on chrooted environemnts
 	if($candidateBasePath == '') $candidateBasePath = DIRECTORY_SEPARATOR;
 	define('BASE_PATH', $candidateBasePath);
 }
 
+// BASE_URL represent the full URL path from the web root to this application
 if(!defined('BASE_URL')) {
-	// Determine the base URL by comparing SCRIPT_NAME to SCRIPT_FILENAME and getting common elements
 	$path = realpath($_SERVER['SCRIPT_FILENAME']);
 	if(substr($path, 0, strlen(BASE_PATH)) == BASE_PATH) {
 		$urlSegmentToRemove = substr($path, strlen(BASE_PATH));
 		if(substr($_SERVER['SCRIPT_NAME'], -strlen($urlSegmentToRemove)) == $urlSegmentToRemove) {
 			$baseURL = substr($_SERVER['SCRIPT_NAME'], 0, -strlen($urlSegmentToRemove));
-			define('BASE_URL', rtrim($baseURL).DIRECTORY_SEPARATOR);
+			define('BASE_URL', trim($baseURL).DIRECTORY_SEPARATOR);
 		}
 	}
-	// If that didn't work, failover to the old syntax.  Hopefully this isn't necessary, and maybe
-	// if can be phased out?
+	// If that didn't work, try using the dirname of the called script index.php
 	if(!defined('BASE_URL')) {
-		$dir = (strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)
-			? dirname($_SERVER['SCRIPT_NAME'])
-			: dirname(dirname($_SERVER['SCRIPT_NAME']));
-		define('BASE_URL', rtrim($dir).DIRECTORY_SEPARATOR);
+		define('BASE_URL', dirname($_SERVER['SCRIPT_NAME']).DIRECTORY_SEPARATOR);
 	}
 }
 
+// Set the theme url, used in templates as
+//		{{ constant('THEME_URL') }}
 if(!defined('THEME_URL')) {
 	define('THEME_URL', BASE_URL.'themes'.DIRECTORY_SEPARATOR.THEME_NAME.DIRECTORY_SEPARATOR);
 }
