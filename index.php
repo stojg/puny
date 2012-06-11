@@ -39,8 +39,14 @@ $app->get('/blog/:url', function ($url) use($app) {
 	));
 })->name('single_post');
 
+// Archives
 $app->get('/archives', function () use($app) {
 	$app->render('archives.html');
 })->name('archives');
+
+// Categories
+$app->get('/category/:name', function ($name) use($app) {
+	$app->render('category.html');
+})->name('category');
 
 $app->run();
