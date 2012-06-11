@@ -1,4 +1,12 @@
 <?php
+// Set the theme url
+if(!defined('THEME_NAME')) {
+	define('THEME_NAME', 'octopress');
+}
+
+// Set constants for this application
+require 'constants.inc.php';
+
 // Use composer autoloader
 require 'vendor/autoload.php';
 
@@ -7,12 +15,11 @@ require 'vendor/slim/slim/Slim/View.php';
 require 'vendor/slim/extras/Views/TwigView.php';
 
 // Inject which View extension to use
-TwigView::$twigExtensions = array(
-	'Twig_Extensions_Slim',
-);
+TwigView::$twigExtensions = array('Twig_Extensions_Slim');
 
 $app = new Slim(array(
-    'view' => 'TwigView'
+    'view' => 'TwigView',
+	'templates.path' => 'themes/octopress/templates',
 ));
 
 // Indexpage

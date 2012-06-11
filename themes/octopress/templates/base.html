@@ -7,8 +7,8 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 		<link rel="canonical" href="">
-		<link href="{{urlFor('index')}}favicon.png" rel="shortcut icon">
-		<link href="{{urlFor('index')}}stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="{{constant('BASE_URL')}}favicon.png" rel="shortcut icon">
+		<link href="{{constant('THEME_URL')}}stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	</head>
@@ -64,7 +64,7 @@
 			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
 			<div class="loading">Loading...</div>
 		</div>
-		<script src="{{urlFor('index')}}javascripts/twitter.js"></script>
+		<script src="{{constant('THEME_URL')}}javascripts/twitter.js"></script>
 		<script type="text/javascript">
 			(function($){
 				$('#banner').getTwitterFeed('stojg', 4, false);
@@ -77,8 +77,8 @@
 		<footer id="footer" class="inner">
 			Copyright &copy; 2012 Stig Lindqvist
 		</footer>
-		<script src="{{urlFor('index')}}javascripts/slash.js"></script>
-		<script src="{{urlFor('index')}}javascripts/jquery.fancybox.pack.js"></script>
+		<script src="{{constant('THEME_URL')}}javascripts/slash.js"></script>
+		<script src="{{constant('THEME_URL')}}javascripts/jquery.fancybox.pack.js"></script>
 		<script type="text/javascript">
 			(function($){
 				$('.fancybox').fancybox();
