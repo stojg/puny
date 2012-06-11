@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+	<article class="post">
+		<h1 class="title"><a href="{{urlFor('single_post', {'url': post.url})}}">{{ post.Title|raw }}</a></h1>
+		<div class="entry-content">
+			{{ post.toHTML|raw }}
+		</div>
+		<div class="meta">
+			<div class="date">
+				<time datetime="{{ post.Date('c') }}" pubdate data-updated="true">
+					{{ post.Date('M, j') }}<span>{{ post.Date('S') }}</span>, {{ post.Date('Y') }}
+				</time></div>
+			<div class="tags">
+				{% for category in post.Categories %}
+				<a class='category' href="{{urlFor('index')}}/blog/categories/{{ category }}/">
+					{{ category }}
+				</a>
+				{% endfor %}
+			</div>
+		</div>
+	</article>
+	<nav id="pagenavi">
+		<div class="center"><a href="{{urlFor('index')}}/blog/archives">Blog Archives</a></div>
+	</nav>
+{% endblock %}

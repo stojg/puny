@@ -17,22 +17,19 @@ $app = new Slim(array(
 
 // Indexpage
 $app->get('/', function () use($app) {
-	$posts = array();
-	$files = glob('posts/*.md') ;
-	foreach($files as $filename) {
-		$posts[] = new \Stojg\Puny\Post($filename);
-	}
+	$blog = new Stojg\Puny\BlogFile('posts/');
 	$app->render('index.html', array(
-		'posts' => $posts,
+		'posts' => $blog->getPosts(10),
 		'baseURL' => $app->urlFor('index')
 	));
 })->name('index');
 
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
-	$posts = array();
-	$posts[] = new \Stojg\Puny\Post('posts/'.$url.'.md');
-	$app->render('index.html', array('posts' => $posts));
+	$blog = new Stojg\Puny\BlogFile('posts/');
+	$app->render('single_post.html', array(
+		'post' => $blog->getPost($url)
+	));
 })->name('single_post');
 
 $app->get('/archives', function () use($app) {
