@@ -51,8 +51,7 @@ class BlogFileTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetPost() {
 		$post = $this->object->getPost('2012-06-09-movie-night');
-		$this->assertTrue($post instanceof Post);
+		$this->assertTrue($post instanceof Cached, get_class($post));
 		$this->assertEquals('movie night', $post->getTitle());
 	}
-
 }
