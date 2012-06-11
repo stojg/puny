@@ -61,13 +61,23 @@ class Post {
 	 * @var boolean
 	 */
 	protected $loaded = false;
-	
+
+	/**
+	 *
+	 * @var string
+	 */
+	protected $cacheKey = '';
 	/**
 	 *
 	 * @param string $filepath
 	 */
 	public function __construct($filepath) {
 		$this->filename = $filepath;
+		$this->cacheKey = sha1_file($this->filename);
+	}
+
+	public function getCacheKey() {
+		return $this->cacheKey;
 	}
 
 	/**
@@ -84,9 +94,7 @@ class Post {
 	 * @return string
 	 */
 	public function getTitle() {
-		if(!$this->loaded) {
-			$this->setContent();
-		}
+		$this->loadData();
 		return $this->title;
 	}
 
@@ -96,9 +104,7 @@ class Post {
 	 * @return string
 	 */
 	public function getDate($format = 'Y-m-d H:i:s') {
-		if(!$this->loaded) {
-			$this->setContent();
-		}
+		$this->loadData();
 		return date($format, strtotime($this->date));
 	}
 
@@ -107,9 +113,7 @@ class Post {
 	 * @return array
 	 */
 	public function getCategories() {
-		if(!$this->loaded) {
-			$this->setContent();
-		}
+		$this->loadData();
 		return $this->categories;
 	}
 
@@ -127,9 +131,7 @@ class Post {
 	 * @return string
 	 */
 	public function getContent() {
-		if(!$this->loaded) {
-			$this->setContent();
-		}
+		$this->loadData();
 		return $this->content;
 	}
 
@@ -137,7 +139,10 @@ class Post {
 	 *
 	 * @param string $content
 	 */
-	protected function setContent() {
+	protected function loadData() {
+		if($this->loaded) {
+			return;
+		}
 		$content = trim(file_get_contents($this->filename));
 		$startMeta = strpos($content, $this->metaDivider);
 		$endMeta = strpos($content, $this->metaDivider, 1);
@@ -146,9 +151,11 @@ class Post {
 			$this->setMetadata($metaData);
 			$content = substr_replace($content, '', $startMeta, $endMeta+strlen($this->metaDivider));
 		}
+		
 		$this->content = trim($content);
 		$this->loaded = true;
 	}
+
 
 	/**
 	 *

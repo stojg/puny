@@ -24,7 +24,7 @@ $app = new Slim(array(
 
 // Indexpage
 $app->get('/', function () use($app) {
-	$blog = new Stojg\Puny\BlogFile('posts/');
+	$blog = new Stojg\Puny\Cached(new Stojg\Puny\BlogFile('posts/'));
 	$app->render('index.html', array(
 		'posts' => $blog->getPosts(10),
 		'baseURL' => $app->urlFor('index')
@@ -33,7 +33,7 @@ $app->get('/', function () use($app) {
 
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new Stojg\Puny\BlogFile('posts/');
+	$blog = new Stojg\Puny\Cached(new Stojg\Puny\BlogFile('posts/'));
 	$app->render('single_post.html', array(
 		'post' => $blog->getPost($url)
 	));

@@ -5,7 +5,7 @@ namespace Stojg\Puny;
 /**
  * @uses \Stojg\Puny\Post
  */
-class BlogFile extends Blog {
+class BlogFile {
 
 	/**
 	 *
@@ -19,6 +19,8 @@ class BlogFile extends Blog {
 	 */
 	protected $files = array();
 
+	protected $cacheKey = '';
+
 	/**
 	 * The directory of all posts
 	 *
@@ -28,6 +30,13 @@ class BlogFile extends Blog {
 		$this->directory = $directory;
 		$this->files = glob($this->directory.DIRECTORY_SEPARATOR.'*.md');
 		rsort($this->files);
+		foreach($this->files as $file) {
+			$this->cacheKey = md5($this->cacheKey.md5_file($file));
+		}
+	}
+
+	public function getCacheKey() {
+		return $this->cacheKey;
 	}
 
 	/**
@@ -43,7 +52,7 @@ class BlogFile extends Blog {
 			if($limit && $i>=$limit) {
 				return $posts;
 			}
-			$posts[] = new \Stojg\Puny\Post($filename);
+			$posts[] = new Cached(new Post($filename));
 			$i++;
 		}
 		return $posts;
@@ -51,10 +60,11 @@ class BlogFile extends Blog {
 
 	/**
 	 * Returns one single post
+	 * 
 	 * @param string $name
 	 * @return \Stojg\Puny\Post
 	 */
 	public function getPost($name) {
-		return new \Stojg\Puny\Post('posts/'.$name.'.md');
+		return new Cached(new Post('posts/'.$name.'.md'));
 	}
 }
