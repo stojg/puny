@@ -7,8 +7,8 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 		<link rel="canonical" href="">
-		<link href="{{constant('BASE_URL')}}favicon.png" rel="shortcut icon">
-		<link href="{{constant('THEME_URL')}}stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="<?php echo BASE_URL;?>favicon.png" rel="shortcut icon">
+		<link href="<?php echo THEME_URL;?>stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	</head>
@@ -16,12 +16,12 @@
 	<body>
 		<header id="header" class="inner">
 			<h1>
-				<a href="{{urlFor('index')}}">My Journal</a>
+				<a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">My Journal</a>
 			</h1>
 			<nav id="main-nav">
 				<ul class="main">
-					<li><a href="{{urlFor('index')}}">Blog</a></li>
-					<li><a href="{{urlFor('index')}}archives">Archives</a></li>
+					<li><a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">Blog</a></li>
+					<li><a href="<?php echo Slim::getInstance()->urlFor('archives'); ?>">Archives</a></li>
 				</ul>
 			</nav>
 			<nav id="mobile-nav">
@@ -29,8 +29,8 @@
 					<a class="button">Menu</a>
 					<div class="container">
 						<ul class="main">
-							<li><a href="{{urlFor('index')}}">Blog</a></li>
-							<li><a href="{{urlFor('index')}}archives">Archives</a></li>
+							<li><a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">Blog</a></li>
+							<li><a href="<?php echo Slim::getInstance()->urlFor('archives'); ?>">Archives</a></li>
 						</ul>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
 			<div class="loading">Loading...</div>
 		</div>
-		<script src="{{constant('THEME_URL')}}javascripts/twitter.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/twitter.js"></script>
 		<script type="text/javascript">
 			(function($){
 				$('#banner').getTwitterFeed('stojg', 4, false);
@@ -72,28 +72,3 @@
 		</script>
 
 		<div id="content" class="inner">
-			{% block content %}{% endblock %}
-		</div>
-		<footer id="footer" class="inner">
-			Copyright &copy; 2012 Stig Lindqvist
-		</footer>
-		<script src="{{constant('THEME_URL')}}javascripts/slash.js"></script>
-		<script src="{{constant('THEME_URL')}}javascripts/jquery.fancybox.pack.js"></script>
-		<script type="text/javascript">
-			(function($){
-				$('.fancybox').fancybox();
-			})(jQuery);
-		</script> <!-- Delete or comment this line to disable Fancybox -->
-		<script type="text/javascript">
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-20319066-61']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		</script>
-	</body>
-</html>

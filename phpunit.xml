@@ -1,7 +1,11 @@
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
 	 <testsuites>
+		 <!--<testsuite name='slim suit'>
+			<directory suffix='Test.php'>./vendor/slim/slim/tests</directory>
+		</testsuite>-->
 		<testsuite name='Puny suit'>
 			<directory suffix='.php'>./tests/</directory>
 		</testsuite>
+		
 	</testsuites>
 </phpunit>

@@ -1,5 +1,5 @@
 <?php
-namespace Stojg\Puny;
+namespace stojg\puny;
 
 /**
  * Wraps a class with APC cache

@@ -1,6 +1,6 @@
 <?php
 
-namespace Stojg\Puny;
+namespace stojg\puny\models;
 
 /**
  * @uses \Stojg\Puny\Post
@@ -52,7 +52,7 @@ class BlogFile {
 			if($limit && $i>=$limit) {
 				return $posts;
 			}
-			$posts[] = new Cached(new Post($filename));
+			$posts[] = new \stojg\puny\Cached(new Post($filename));
 			$i++;
 		}
 		return $posts;
@@ -65,6 +65,6 @@ class BlogFile {
 	 * @return \Stojg\Puny\Post
 	 */
 	public function getPost($name) {
-		return new Cached(new Post('posts/'.$name.'.md'));
+		return new \stojg\puny\Cached(new Post('posts/'.$name.'.md'));
 	}
 }

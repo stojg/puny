@@ -1,7 +1,7 @@
 <?php
 // Set the theme url
 if(!defined('THEME_NAME')) {
-	define('THEME_NAME', 'octopress');
+	define('THEME_NAME', 'puny');
 }
 
 // Set constants for this application
@@ -10,43 +10,43 @@ require 'constants.inc.php';
 // Use composer autoloader
 require 'vendor/autoload.php';
 
-// HACK to get the Twigview to work
-require 'vendor/slim/slim/Slim/View.php';
-require 'vendor/slim/extras/Views/TwigView.php';
-
-// Inject which View extension to use
-TwigView::$twigExtensions = array('Twig_Extensions_Slim');
-
 $app = new Slim(array(
-    'view' => 'TwigView',
-	'templates.path' => 'themes/octopress/templates',
+	'templates.path' => 'themes/puny/templates',
 ));
+
+
 
 // Indexpage
 $app->get('/', function () use($app) {
-	$blog = new Stojg\Puny\Cached(new Stojg\Puny\BlogFile('posts/'));
-	$app->render('index.html', array(
+	$blog = new stojg\puny\Cached(new stojg\puny\models\BlogFile('posts/'));
+	$app->render('home.php', array(
 		'posts' => $blog->getPosts(10),
-		'baseURL' => $app->urlFor('index')
 	));
 })->name('index');
 
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new Stojg\Puny\Cached(new Stojg\Puny\BlogFile('posts/'));
-	$app->render('single_post.html', array(
+	$blog = new stojg\puny\Cached(new stojg\puny\models\BlogFile('posts/'));
+	$app->render('single_post.php', array(
 		'post' => $blog->getPost($url)
 	));
 })->name('single_post');
 
 // Archives
 $app->get('/archives', function () use($app) {
-	$app->render('archives.html');
+	$blog = new stojg\puny\Cached(new stojg\puny\models\BlogFile('posts/'));
+	$app->render('archives.php', array(
+		'posts' => $blog->getPosts(10),
+	));
 })->name('archives');
 
 // Categories
 $app->get('/category/:name', function ($name) use($app) {
-	$app->render('category.html');
+	$blog = new stojg\puny\Cached(new stojg\puny\models\BlogFile('posts/'));
+	$app->render('category.php', array(
+		'category' => $name,
+		'posts' => $blog->getPosts(10),
+	));
 })->name('category');
 
 $app->run();

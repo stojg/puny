@@ -1,6 +1,6 @@
 <?php
 
-namespace Stojg\Puny;
+namespace stojg\puny;
 
 /**
  * Test class for BlogFile.
@@ -18,7 +18,7 @@ class BlogFileTest extends \PHPUnit_Framework_TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		$this->object = new BlogFile('tests/src/Stojg/Puny/fixtures');
+		$this->object = new models\BlogFile('tests/src/stojg/puny/models/fixtures/');
 	}
 
 	/**
@@ -41,10 +41,7 @@ class BlogFileTest extends \PHPUnit_Framework_TestCase {
 			$last = array_pop($posts);
 			$this->assertGreaterThan($last->getDate('U'),$first->getDate('U'));
 		}
-		
-
 	}
-
 
 	/**
 	 * @covers Stojg\Puny\BlogFile::getPost

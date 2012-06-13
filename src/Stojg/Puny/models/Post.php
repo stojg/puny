@@ -1,5 +1,5 @@
 <?php
-namespace Stojg\Puny;
+namespace stojg\puny\models;
 
 /**
  * Description of Post

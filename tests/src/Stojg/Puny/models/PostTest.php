@@ -1,6 +1,6 @@
 <?php
 
-namespace Stojg\Puny;
+namespace stojg\puny\models;
 
 /**
  * Test class for Post.
@@ -18,14 +18,14 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		$this->object = new Post('tests/src/Stojg/Puny/fixtures/2012-06-07-quiz-night.md');
+		$this->object = new Post('tests/src/stojg/puny/models/fixtures/2012-06-07-quiz-night.md');
 	}
 
 	/**
 	 * @covers Stojg\Puny\Post::__construct
 	 */
 	public function testInit() {
-		$this->assertTrue($this->object instanceof \Stojg\Puny\Post);
+		$this->assertTrue($this->object instanceof Post);
 	}
 
 	/**

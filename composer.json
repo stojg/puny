@@ -15,12 +15,9 @@
 	"require": {
 		"php": ">=5.3.2",
 		"dflydev/markdown": "1.0.2",
-		"slim/slim": "1.6.2",
-		"slim/extras": "1.0.2",
-		"twig/twig": "1.8.2"
+		"slim/slim": "1.6.2"
     },
 	"autoload": {
-        "psr-0": { "Stojg\\Puny": "src/" },
-		"classmap": ["vendor/slim/extras/Views/"]
+        "psr-0": { "stojg\\puny": "src/" }
     }
 }
