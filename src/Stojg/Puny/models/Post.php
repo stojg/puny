@@ -143,7 +143,7 @@ class Post {
 		if($this->loaded) {
 			return;
 		}
-		$content = trim(file_get_contents($this->filename));
+		$content = $this->fileGetContents($this->filename);
 		$startMeta = strpos($content, $this->metaDivider);
 		$endMeta = strpos($content, $this->metaDivider, 1);
 		if($startMeta === 0 && $endMeta) {
@@ -189,5 +189,27 @@ class Post {
 
 			
 		}
+	}
+
+	/**
+	 *
+	 * @param type $filename
+	 * @return boolean
+	 */
+	protected function fileGetContents($filename) {
+		if(!file_exists($filename)) {
+			return false;
+		}
+
+		if(!is_readable($filename)) {
+			return false;
+		}
+
+		$fh = fopen($filename, 'r');
+		flock($fh, LOCK_SH);
+		$content=fread ($fh, filesize($filename));
+		flock($fh, LOCK_UN);
+		fclose($fh);
+		return trim($content);
 	}
 }

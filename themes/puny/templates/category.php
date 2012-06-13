@@ -5,6 +5,7 @@
 	<div id="content" class="inner">
 	<section class="archives">
 		<h1 class="year"><?php echo ucfirst($category); ?></h1>
+		
 		<?php foreach($posts as $post) { ?>
 		<article>
 			<h1 class="title">

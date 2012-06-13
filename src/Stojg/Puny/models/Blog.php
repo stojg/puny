@@ -5,7 +5,7 @@ namespace stojg\puny\models;
 /**
  * @uses \Stojg\Puny\Post
  */
-class BlogFile {
+class Blog {
 
 	/**
 	 *
@@ -46,8 +46,8 @@ class BlogFile {
 	 * @return array|\Stojg\Puny\Post
 	 */
 	public function getPosts($limit=false) {
-		$i = 0;
 		$posts = array();
+		$i = 0;
 		foreach($this->files as $filename) {
 			if($limit && $i>=$limit) {
 				return $posts;
@@ -59,12 +59,28 @@ class BlogFile {
 	}
 
 	/**
+	 *
+	 * @param string $name
+	 * @return \stojg\puny\Cached
+	 */
+	public function getCategory($name) {
+		$posts = array();
+		foreach($this->files as $filename) {
+			$post = new \stojg\puny\Cached(new Post($filename));
+			if(in_array($name, $post->getCategories())) {
+				$posts[] = $post;
+			}
+		}
+		return $posts;
+	}
+
+	/**
 	 * Returns one single post
 	 * 
 	 * @param string $name
 	 * @return \Stojg\Puny\Post
 	 */
 	public function getPost($name) {
-		return new \stojg\puny\Cached(new Post('posts/'.$name.'.md'));
+		return new \stojg\puny\Cached(new Post($this->directory.$name.'.md'));
 	}
 }
