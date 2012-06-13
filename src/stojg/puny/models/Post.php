@@ -18,7 +18,7 @@ class Post {
 	 *
 	 * @var string
 	 */
-	protected $metaDivider = "---\n";
+	protected $metaDivider = "---";
 
 	/**
 	 *
@@ -67,6 +67,12 @@ class Post {
 	 * @var string
 	 */
 	protected $cacheKey = '';
+
+	/**
+	 * @var string
+	 */
+	protected $raw = '';
+	
 	/**
 	 *
 	 * @param string $filepath
@@ -78,6 +84,14 @@ class Post {
 
 	public function getCacheKey() {
 		return $this->cacheKey;
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getRaw() {
+		return $this->raw;
 	}
 
 	/**
@@ -144,6 +158,7 @@ class Post {
 			return;
 		}
 		$content = $this->fileGetContents($this->filename);
+		$this->raw = $content;
 		$startMeta = strpos($content, $this->metaDivider);
 		$endMeta = strpos($content, $this->metaDivider, 1);
 		if($startMeta === 0 && $endMeta) {
