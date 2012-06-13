@@ -1,6 +1,11 @@
 # Intro
 
-A puny little blog tool for PHP using Slim Framework, Twig and Markdown
+A puny little PHP blog platform that aims to be as small and fast as possible.
+
+Uses work from
+
+ - dflydev's [PHP Markdown & Extra](https://github.com/dflydev/dflydev-markdown) fork
+ - codeguy's [Slim](http://slimframework.com) framework
 
 # Installation
 
