@@ -17,18 +17,20 @@ $app = new Slim(array(
 	'templates.path' => 'themes/puny/templates',
 ));
 
-$authenticate = function () use($app) {
+$locked = function () use($app) {
     return function () use ($app) {
-		$auth = new \stojg\puny\models\User($app);
-		if(!$auth->valid()) {
+		$user = new \stojg\puny\models\User($app);
+		if(!$user->valid()) {
 			$app->redirect($app->urlFor('login'));
 		}
     };
 };
 
+$app->add(new \stojg\puny\helpers\ViewHelper());
+
 // Indexpage
 $app->get('/', function () use($app) {
-	$blog = new stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('home.php', array(
 		'posts' => $blog->getPosts(5),
 	));
@@ -36,7 +38,7 @@ $app->get('/', function () use($app) {
 
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('single_post.php', array(
 		'post' => $blog->getPost($url)
 	));
@@ -44,7 +46,7 @@ $app->get('/blog/:url', function ($url) use($app) {
 
 // Archives
 $app->get('/archives', function () use($app) {
-	$blog = new stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('archives.php', array(
 		'posts' => $blog->getPosts(),
 	));
@@ -52,7 +54,7 @@ $app->get('/archives', function () use($app) {
 
 // Categories
 $app->get('/category/:name', function ($name) use($app) {
-	$blog = new stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('category.php', array(
 		'category' => $name,
 		'posts' => $blog->getCategory($name),
@@ -62,19 +64,21 @@ $app->get('/category/:name', function ($name) use($app) {
 /** Admin functionality **/
 
 // Single post Edit
-$app->get('/edit/:url', $authenticate(), function ($url) use($app) {
-	$blog = new stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+$app->get('/edit/:url', $locked(), function ($url) use($app) {
+	$blog = new stojg\puny\models\Blog('posts/');
 	$app->render('edit.php', array(
-		'post' => $blog->getPost($url)
+		'post' => $blog->getPost($url, false)
 	));
-})->name('edit-get');
+})->name('edit');
 
 // Single post Edit
-$app->post('/edit/:url', $authenticate, function ($url) use($app) {
-	file_put_contents('posts/'.$url.'.md', $app->request()->post('content'));
+$app->post('/edit/:url', $locked(), function ($url) use($app) {
+	$filename = 'posts/'.$url.'.md';
+	file_put_contents($filename.'.tmp', $app->request()->post('content'));
+	rename($filename.'.tmp', $filename);
 	$app->flash('info', 'You just saved something');
-	$app->redirect($app->request()->getRootUri().'/edit/'.$url);
-})->name('edit-post');
+	$app->redirect($app->urlFor('edit', array('url'=>$url)));
+});
 
 // Login
 $app->get('/login/', function() use($app) {
@@ -83,8 +87,8 @@ $app->get('/login/', function() use($app) {
 
 // Login action
 $app->post('/login/', function() use($app) {
-	$auth = new stojg\puny\models\User();
-	if(!$auth->login($app)) {
+	$user = new \stojg\puny\models\User();
+	if(!$user->login($app)) {
 		$app->redirect($app->urlFor('login'));
 	}
 	$app->redirect($app->urlFor('index'));
@@ -92,8 +96,8 @@ $app->post('/login/', function() use($app) {
 
 // Logout
 $app->get('/logout', function() use($app) {
-	$auth = new stojg\puny\models\User();
-	$auth->logout();
+	$user = new stojg\puny\models\User();
+	$user->logout();
 	$app->redirect($app->request()->getRootUri());
 })->name('logout');
 

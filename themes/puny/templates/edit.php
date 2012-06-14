@@ -4,7 +4,7 @@
 	<article class="post">
 		<form method="POST">
 			<h1 class="title">
-				<a href="<?php echo Slim::getInstance()->urlFor('single_post', array('url'=>$post->getURL())); ?>">
+				<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->getURL())); ?>">
 					<?php echo $post->getTitle(); ?>
 				</a>
 			</h1>
@@ -19,7 +19,7 @@
 		</form>
 	</article>
 	<nav id="pagenavi">
-		<div class="center"><a href="<? echo Slim::getInstance()->urlFor('archives');?>">Blog Archives</a></div>
+		<div class="center"><a href="<? echo $app->urlFor('archives');?>">Blog Archives</a></div>
 	</nav>
 <?php
 	require 'partials/footer.php';

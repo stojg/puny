@@ -16,12 +16,18 @@
 	<body>
 		<header id="header" class="inner">
 			<h1>
-				<a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">My Journal</a>
+				<a href="<?php echo $app->urlFor('index'); ?>">My Journal</a>
 			</h1>
 			<nav id="main-nav">
 				<ul class="main">
-					<li><a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">Blog</a></li>
-					<li><a href="<?php echo Slim::getInstance()->urlFor('archives'); ?>">Archives</a></li>
+					<li><a href="<?php echo $app->urlFor('index'); ?>">Blog</a></li>
+					<li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
+					<?php if($user->valid()) { ?>
+					<li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
+					<?php } else { ?>
+					<li><a href="<?php echo $app->urlFor('login'); ?>">Login</a></li>
+					<?php }  ?>
+
 				</ul>
 			</nav>
 			<nav id="mobile-nav">
@@ -29,8 +35,13 @@
 					<a class="button">Menu</a>
 					<div class="container">
 						<ul class="main">
-							<li><a href="<?php echo Slim::getInstance()->urlFor('index'); ?>">Blog</a></li>
-							<li><a href="<?php echo Slim::getInstance()->urlFor('archives'); ?>">Archives</a></li>
+							<li><a href="<?php echo $app->urlFor('index'); ?>">Blog</a></li>
+							<li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
+							<?php if($user->valid()) { ?>
+							<li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
+							<?php } else { ?>
+							<li><a href="<?php echo $app->urlFor('login'); ?>">Login</a></li>
+							<?php }  ?>
 						</ul>
 					</div>
 				</div>
@@ -57,6 +68,7 @@
 			</nav>
 		</header>
 
+		<?php if(!$user->valid()) { ?>
 		<div id="banner" class="inner">
 			<div class="container">
 				<ul class="feed"></ul>
@@ -70,7 +82,7 @@
 				$('#banner').getTwitterFeed('stojg', 4, false);
 			})(jQuery);
 		</script>
-
+		<?php } ?>
 		<div id="content" class="inner">
 			<div class="flashmessage">
 				<?php echo $flash['info']; ?>

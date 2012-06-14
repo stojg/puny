@@ -80,7 +80,10 @@ class Blog {
 	 * @param string $name
 	 * @return \Stojg\Puny\Post
 	 */
-	public function getPost($name) {
+	public function getPost($name, $cached=true) {
+		if(!$cached) {
+			return new Post($this->directory.$name.'.md');
+		}
 		return new \stojg\puny\Cached(new Post($this->directory.$name.'.md'));
 	}
 }
