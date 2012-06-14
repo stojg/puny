@@ -72,3 +72,6 @@
 		</script>
 
 		<div id="content" class="inner">
+			<div class="flashmessage">
+				<?php echo $flash['info']; ?>
+			</div>
