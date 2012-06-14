@@ -10,7 +10,7 @@
 		<link href="<?php echo BASE_URL;?>favicon.png" rel="shortcut icon">
 		<link href="<?php echo THEME_URL;?>stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/modernizr-2.0.js"></script>
 	</head>
 
 	<body>
@@ -76,12 +76,6 @@
 			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
 			<div class="loading">Loading...</div>
 		</div>
-		<script src="<?php echo THEME_URL;?>javascripts/twitter.js"></script>
-		<script type="text/javascript">
-			(function($){
-				$('#banner').getTwitterFeed('stojg', 4, false);
-			})(jQuery);
-		</script>
 		<?php } ?>
 		<div id="content" class="inner">
 			<div class="flashmessage">

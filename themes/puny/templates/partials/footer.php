@@ -2,13 +2,18 @@
 		<footer id="footer" class="inner">
 			Copyright &copy; 2012 Stig Lindqvist
 		</footer>
-		<script src="<?php echo THEME_URL;?>javascripts/slash.js"></script>
-		<script src="<?php echo THEME_URL;?>javascripts/jquery.fancybox.pack.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/minified.js"></script>
+		
 		<script type="text/javascript">
 			(function($){
 				$('.fancybox').fancybox();
 			})(jQuery);
-		</script> <!-- Delete or comment this line to disable Fancybox -->
+		</script>
+		<script type="text/javascript">
+			(function($){
+				$('#banner').getTwitterFeed('stojg', 4, false);
+			})(jQuery);
+		</script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-20319066-61']);
@@ -20,5 +25,6 @@
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
+
 	</body>
 </html>

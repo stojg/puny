@@ -39,14 +39,11 @@ function addSidebarToggler() {
 }
 
 function testFeatures() {
-  var features = ['maskImage'];
-  $(features).map(function(feature) {
-    if (Modernizr.testAllProps(feature)) {
-      $('html').addClass(feature);
-    } else {
-      $('html').addClass('no-'+feature);
-    }
-  });
+  if (Modernizr.testAllProps('maskImage')) {
+    $('html').addClass('maskImage');
+  } else {
+    $('html').addClass('no-'+'maskImage');
+  }
   if ("placeholder" in document.createElement("input")) {
     $('html').addClass('placeholder');
   } else {
@@ -116,14 +113,14 @@ function renderDeliciousLinks(items) {
   $('#delicious').html(output);
 }
 
-$.domReady(function() {
-  testFeatures();
-  wrapFlashVideos();
-  flashVideoFallback();
-  addCodeLineNumbers();
-  getNav();
-  addSidebarToggler();
-});
+(function($){
+	testFeatures();
+	wrapFlashVideos();
+	flashVideoFallback();
+	addCodeLineNumbers();
+	getNav();
+	addSidebarToggler();
+})(jQuery);
 
 // iOS scaling bug fix
 // Rewritten version
