@@ -71,7 +71,7 @@ class Post {
 	/**
 	 * @var string
 	 */
-	protected $raw = '';
+	protected $fileContents = '';
 	
 	/**
 	 *
@@ -91,7 +91,7 @@ class Post {
 	 * @return string
 	 */
 	public function getRaw() {
-		return $this->raw;
+		return $this->fileContents;
 	}
 
 	/**
@@ -105,6 +105,16 @@ class Post {
 
 	/**
 	 *
+	 * @param string $title
+	 * @return \stojg\puny\models\Post
+	 */
+	public function setTitle($title) {
+		$this->title = $title;
+		return $this;
+	}
+
+	/**
+	 *
 	 * @return string
 	 */
 	public function getTitle() {
@@ -114,12 +124,32 @@ class Post {
 
 	/**
 	 *
+	 * @param string $date
+	 * @return \stojg\puny\models\Post
+	 */
+	public function setDate($date) {
+		$this->date = date('Y-m-d H:i', strtotime($date));
+		return $this;
+	}
+
+	/**
+	 *
 	 * @param string $format
 	 * @return string
 	 */
-	public function getDate($format = 'Y-m-d H:i:s') {
+	public function getDate($format = 'Y-m-d H:i') {
 		$this->loadData();
 		return date($format, strtotime($this->date));
+	}
+
+	/**
+	 *
+	 * @param string $categories - comma separated list
+	 * @return \stojg\puny\models\Post
+	 */
+	public function setCategories($categories) {
+		$this->categories = explode(',', $categories);
+		return $this;
 	}
 
 	/**
@@ -140,6 +170,16 @@ class Post {
 	}
 
 	/**
+	 *
+	 * @param string $content
+	 * @return \stojg\puny\models\Post
+	 */
+	public function setContent($content) {
+		$this->content = $content;
+		return $this;
+	}
+
+	/**
 	 * Get the raw contents
 	 *
 	 * @return string
@@ -151,23 +191,51 @@ class Post {
 
 	/**
 	 *
-	 * @param string $content
+	 */
+	public function save($directory) {
+		$fileContent = "---".PHP_EOL;
+		$fileContent.= 'layout: post'.PHP_EOL;
+		$fileContent.= 'title: "'.$this->title.'"'.PHP_EOL;
+		$fileContent.= 'date: '.$this->date.PHP_EOL;
+		$fileContent.= 'comments: true'.PHP_EOL;
+		$fileContent.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
+		$fileContent.= '---'.PHP_EOL;
+		$fileContent.= $this->content;
+		
+		$filename = date('Y-m-d', strtotime($this->date));
+		$filename.= '-'.preg_replace('/[^A-Za-z0-9]/', '-', $this->title);
+		$filename = $directory.DIRECTORY_SEPARATOR.strtolower($filename).'.md';
+
+		$fh = fopen($filename, 'w');
+		flock($fh, LOCK_EX);
+		fwrite($fh, $fileContent, strlen($fileContent));
+		flock($fh, LOCK_UN);
+		fclose($fh);
+
+		if($filename !== $this->filename) {
+			unlink($this->filename);
+			$this->filename = $filename;
+		}
+	}
+
+	/**
+	 *
 	 */
 	protected function loadData() {
 		if($this->loaded) {
 			return;
 		}
-		$content = $this->fileGetContents($this->filename);
-		$this->raw = $content;
-		$startMeta = strpos($content, $this->metaDivider);
-		$endMeta = strpos($content, $this->metaDivider, 1);
+		$fileContent = $this->fileGetContents($this->filename);
+		$this->fileContents = $fileContent;
+		$startMeta = strpos($fileContent, $this->metaDivider);
+		$endMeta = strpos($fileContent, $this->metaDivider, 1);
 		if($startMeta === 0 && $endMeta) {
-			$metaData = substr($content, $startMeta, $endMeta+strlen($this->metaDivider));
+			$metaData = substr($fileContent, $startMeta, $endMeta+strlen($this->metaDivider));
 			$this->setMetadata($metaData);
-			$content = substr_replace($content, '', $startMeta, $endMeta+strlen($this->metaDivider));
+			$fileContent = substr_replace($fileContent, '', $startMeta, $endMeta+strlen($this->metaDivider));
 		}
 		
-		$this->content = trim($content);
+		$this->content = trim($fileContent);
 		$this->loaded = true;
 	}
 

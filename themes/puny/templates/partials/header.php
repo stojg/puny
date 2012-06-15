@@ -9,6 +9,7 @@
 		<link rel="canonical" href="">
 		<link href="<?php echo BASE_URL;?>favicon.png" rel="shortcut icon">
 		<link href="<?php echo THEME_URL;?>stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="<?php echo THEME_URL;?>stylesheets/font-awesome.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script src="<?php echo THEME_URL;?>javascripts/modernizr-2.0.js"></script>
 	</head>

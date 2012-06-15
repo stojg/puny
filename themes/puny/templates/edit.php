@@ -3,30 +3,31 @@
 	<div class="entry-content">
 		<form method="post">
 			<div class="field">
-				<label for="title">Title</label>
-				<input type="text" name="title" value="<?php echo $post->getTitle();?>" />
+				<input size="60" type="text" name="title" value="<?php echo $post->getTitle();?>" placeholder="Title" />
 			</div>
-			<div class="field">
-				<label for="publishdate">Publish date</label>
-				<input type="datetime" name="publishdate" value="<?php echo $post->getDate('Y-m-d H:i:s');?>" />
+
+			<div class="input-prepend field">
+				<span class="add-on"><i class="icon-tags"></i></span>
+				<input size="40" type="text" name="categories" value="<?php echo implode(',', $post->getCategories());?>" placeholder="Categories separated with commas" />
+			
+				<span class="add-on"><i class="icon-calendar"></i></span>
+				<input type="datetime" name="date" value="<?php echo $post->getDate('Y-m-d H:i');?>" placeholder="<?php echo date('Y-m-d H:i'); ?>" />
 			</div>
-			<div class="field">
-				<label for="categories">Categories</label>
-				<input type="text" name="categories" value="<?php echo implode(',', $post->getCategories());?>" />
-			</div>
-			<div class="field">
+
+			<div class="input-prepend field">
 				<textarea name="content"><?php echo $post->getContent(); ?></textarea>
 			</div>
-			<div class="field">
-				<input type="submit" value="Save article" class="btn btn-inverse"/>
+
+			<div class="input-prepend field">
+				<input type="submit" value="Update article" class="btn-small btn-inverse "/>
 			</div>
 		</form>
 	</div>
 
 	<div class="meta">
-		<div class="actions">
+		<div class="view">
 			<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->getURL())); ?>">
-				View <?php echo $post->getTitle(); ?>
+				View post
 			</a>
 		</div>
 	</div>

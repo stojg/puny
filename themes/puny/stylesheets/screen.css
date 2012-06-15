@@ -1073,14 +1073,18 @@ article .entry-content .video-container embed{
 
 .post .meta .date,
 .post .meta .tags,
-.post .meta .comments{
+.post .meta .comments,
+.post .meta .edit,
+.post .meta .view{
 	padding-left:30px;
 	position:relative
 }
 
 .post .meta .date:before,
 .post .meta .tags:before,
-.post .meta .comments:before{
+.post .meta .comments:before,
+.post .meta .edit:before,
+.post .meta .view:before{
 	color:#ccc;
 	font:1.3em FontAwesome;
 	line-height:1.6em;
@@ -1091,32 +1095,45 @@ article .entry-content .video-container embed{
 @media screen and (max-width: 800px){
 	.post .meta .date,
 	.post .meta .tags,
-	.post .meta .comments{
+	.post .meta .comments,
+	.post .meta .edit,
+	.post .meta .view{
 		display:-moz-inline-box;
 		-moz-box-orient:vertical;
 		display:inline-block;
 		vertical-align:middle;
 		*vertical-align:auto;
-		margin-right:30px
+		margin-right:30px;
 	}
 	.post .meta .date,
 	.post .meta .tags,
-	.post .meta .comments{
-		*display:inline
+	.post .meta .comments,
+	.post .meta .edit,
+	.post .meta .view{
+		*display:inline;
 	}
 }
 
 .post .meta .date:before{
-	content:"\f073"
+	content:"\f073";
 }
 
 .post .meta .tags:before{
-	content:"\f02c"
+	content:"\f02c";
 }
 
 .post .meta .comments:before{
-	content:"\f075"
+	content:"\f075";
 }
+
+.post .meta .edit:before{
+	content: "\f040";
+}
+
+.post .meta .view:before{
+	 content: "\f06e"; 
+}
+
 
 .archives{
 	position:relative

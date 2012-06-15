@@ -74,10 +74,16 @@ $app->get('/edit/:url', $locked(), function ($url) use($app) {
 // Single post Edit
 $app->post('/edit/:url', $locked(), function ($url) use($app) {
 	$filename = 'posts/'.$url.'.md';
-	file_put_contents($filename.'.tmp', $app->request()->post('content'));
-	rename($filename.'.tmp', $filename);
+	$req = $app->request();
+	$blog = new stojg\puny\models\Blog('posts/');
+	$post = $blog->getPost($url, false);
+	$post->setContent($req->post('content'))
+		->setTitle($req->post('title'))
+		->setDate($req->post('date'))
+		->setCategories($req->post('categories'))
+		->save('posts');
 	$app->flash('info', 'You just saved something');
-	$app->redirect($app->urlFor('edit', array('url'=>$url)));
+	$app->redirect($app->urlFor('edit', array('url'=>$post->getURL())));
 });
 
 // Login
@@ -89,6 +95,7 @@ $app->get('/login/', function() use($app) {
 $app->post('/login/', function() use($app) {
 	$user = new \stojg\puny\models\User();
 	if(!$user->login($app)) {
+		$app->flash('error', 'Login failed, try again!');
 		$app->redirect($app->urlFor('login'));
 	}
 	$app->redirect($app->urlFor('index'));
