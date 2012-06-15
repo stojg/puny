@@ -120,6 +120,7 @@ function renderDeliciousLinks(items) {
 	addCodeLineNumbers();
 	getNav();
 	addSidebarToggler();
+	$('textarea').autosize();
 })(jQuery);
 
 // iOS scaling bug fix

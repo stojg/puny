@@ -77,7 +77,13 @@
 			<div class="loading">Loading...</div>
 		</div>
 		<?php } ?>
+
 		<div id="content" class="inner">
-			<div class="flashmessage">
-				<?php echo $flash['info']; ?>
+
+		<?php if(isset($flash) && $flash) { ?>
+			<div class="flashmessage ">
+				<?php foreach($flash->getMessages() as $type => $message) { ?>
+					<div class="<?php echo $type; ?>"><?php echo $message; ?></div>
+				<?php } ?>
 			</div>
+		<?php } ?>

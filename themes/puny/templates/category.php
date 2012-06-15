@@ -1,11 +1,7 @@
-<?php
-	require 'partials/header.php';
-?>
-
-	<div id="content" class="inner">
+<?php require 'partials/header.php'; ?>
+<div id="content" class="inner">
 	<section class="archives">
 		<h1 class="year"><?php echo ucfirst($category); ?></h1>
-		
 		<?php foreach($posts as $post) { ?>
 		<article>
 			<h1 class="title">
@@ -30,7 +26,5 @@
 		</article>
 		<?php } ?>
 	</section>
-	</div>
-<?php
-	require 'partials/footer.php';
-?>
+</div>
+<?php require 'partials/footer.php'; ?>
