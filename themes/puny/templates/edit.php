@@ -1,11 +1,12 @@
 <?php require 'partials/header.php'; ?>
+
 <article class="post">
+
 	<div class="entry-content">
 		<form method="post">
 			<div class="field">
 				<input size="60" type="text" name="title" value="<?php echo $post->getTitle();?>" placeholder="Title" />
 			</div>
-
 			<div class="input-prepend field">
 				<span class="add-on"><i class="icon-tags"></i></span>
 				<input size="40" type="text" name="categories" value="<?php echo implode(',', $post->getCategories());?>" placeholder="Categories separated with commas" />
@@ -15,11 +16,11 @@
 			</div>
 
 			<div class="input-prepend field">
-				<textarea name="content"><?php echo $post->getContent(); ?></textarea>
+				<textarea name="content" rows="5"><?php echo $post->getContent(); ?></textarea>
 			</div>
 
 			<div class="input-prepend field">
-				<input type="submit" value="Update article" class="btn-small btn-inverse "/>
+				<input type="submit" value="Save" class="btn-small btn-inverse "/>
 			</div>
 		</form>
 	</div>

@@ -63,6 +63,25 @@ $app->get('/category/:name', function ($name) use($app) {
 
 /** Admin functionality **/
 
+$app->get('/add', $locked(), function() use($app) {
+	$post = new stojg\puny\models\Post('posts/');
+	$app->render('edit.php', array(
+		'post' => $post
+	));
+})->name('add');
+
+$app->post('/add', $locked(), function() use($app) {
+	$req = $app->request();
+	$post = new stojg\puny\models\Post('posts/');
+	$post->setContent($req->post('content'))
+		->setTitle($req->post('title'))
+		->setDate($req->post('date'))
+		->setCategories($req->post('categories'))
+		->save('posts');
+	$app->flash('info', 'You just create a new post.');
+	$app->redirect($app->urlFor('edit', array('url'=>$post->getURL())));
+});
+
 // Single post Edit
 $app->get('/edit/:url', $locked(), function ($url) use($app) {
 	$blog = new stojg\puny\models\Blog('posts/');
@@ -73,7 +92,6 @@ $app->get('/edit/:url', $locked(), function ($url) use($app) {
 
 // Single post Edit
 $app->post('/edit/:url', $locked(), function ($url) use($app) {
-	$filename = 'posts/'.$url.'.md';
 	$req = $app->request();
 	$blog = new stojg\puny\models\Blog('posts/');
 	$post = $blog->getPost($url, false);

@@ -1,4 +1,4 @@
-</div>
+		</div>
 		<footer id="footer" class="inner">
 			Copyright &copy; 2012 Stig Lindqvist
 		</footer>
@@ -25,6 +25,5 @@
 				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 			})();
 		</script>
-
 	</body>
 </html>

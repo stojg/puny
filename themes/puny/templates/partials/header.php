@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>My Journal</title>
+		<title><?php if(isset($title)){echo $title.' - ';}?>My Journal</title>
 		<meta name="author" content="Stig Lindqvist">
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
@@ -23,12 +23,6 @@
 				<ul class="main">
 					<li><a href="<?php echo $app->urlFor('index'); ?>">Blog</a></li>
 					<li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
-					<?php if($user->valid()) { ?>
-					<li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
-					<?php } else { ?>
-					<li><a href="<?php echo $app->urlFor('login'); ?>">Login</a></li>
-					<?php }  ?>
-
 				</ul>
 			</nav>
 			<nav id="mobile-nav">
@@ -38,11 +32,6 @@
 						<ul class="main">
 							<li><a href="<?php echo $app->urlFor('index'); ?>">Blog</a></li>
 							<li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
-							<?php if($user->valid()) { ?>
-							<li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
-							<?php } else { ?>
-							<li><a href="<?php echo $app->urlFor('login'); ?>">Login</a></li>
-							<?php }  ?>
 						</ul>
 					</div>
 				</div>
@@ -69,7 +58,6 @@
 			</nav>
 		</header>
 
-		<?php if(!$user->valid()) { ?>
 		<div id="banner" class="inner">
 			<div class="container">
 				<ul class="feed"></ul>
@@ -77,10 +65,8 @@
 			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
 			<div class="loading">Loading...</div>
 		</div>
-		<?php } ?>
 
 		<div id="content" class="inner">
-
 		<?php if(isset($flash) && $flash) { ?>
 			<div class="flashmessage ">
 				<?php foreach($flash->getMessages() as $type => $message) { ?>

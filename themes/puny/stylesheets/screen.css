@@ -141,6 +141,15 @@ a{
 	}
 }
 
+#user-nav {
+	float:right;
+}
+
+#user-nav>ul>li{
+	list-style: none;
+	display: inline;
+}
+
 #main-nav{
 	float:left;
 	margin-left:30px
