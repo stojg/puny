@@ -31,3 +31,11 @@ if(!defined('BASE_URL')) {
 if(!defined('THEME_URL')) {
 	define('THEME_URL', BASE_URL.'themes'.DIRECTORY_SEPARATOR.THEME_NAME.DIRECTORY_SEPARATOR);
 }
+
+if(!defined('USERNAME')) {
+	define('USERNAME', 'admin');
+}
+
+if(!defined('PASSWORD')) {
+	define('PASSWORD', 'password');
+}

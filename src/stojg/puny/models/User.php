@@ -79,10 +79,10 @@ class User {
 	 * @return boolean
 	 */
 	public function valid() {
-		if($this->getUsername() !== 'admin') {
+		if($this->getUsername() !== USERNAME) {
 			return false;
 		}
-		if($this->getPassword() !== 'password') {
+		if($this->getPassword() !== PASSWORD) {
 			return false;
 		}
 		return true;

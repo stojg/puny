@@ -139,6 +139,9 @@ class Post {
 	 */
 	public function getDate($format = 'Y-m-d H:i') {
 		$this->loadData();
+		if(!$this->date) {
+			$this->date = 'now';
+		}
 		return date($format, strtotime($this->date));
 	}
 
@@ -213,7 +216,9 @@ class Post {
 		fclose($fh);
 
 		if($filename !== $this->filename) {
-			unlink($this->filename);
+			if(file_exists($this->filename) && is_file($this->filename)) {
+				unlink($this->filename);
+			}
 			$this->filename = $filename;
 		}
 	}
@@ -222,9 +227,14 @@ class Post {
 	 *
 	 */
 	protected function loadData() {
+		if($this->filename === 'posts/') {
+			$this->loaded = true;
+			return;
+		}
 		if($this->loaded) {
 			return;
 		}
+
 		$fileContent = $this->fileGetContents($this->filename);
 		$this->fileContents = $fileContent;
 		$startMeta = strpos($fileContent, $this->metaDivider);
