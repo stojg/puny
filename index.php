@@ -40,7 +40,8 @@ $app->get('/', function () use($app) {
 $app->get('/blog/:url', function ($url) use($app) {
 	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('single_post.php', array(
-		'post' => $blog->getPost($url)
+		'post' => $post = $blog->getPost($url),
+		'title' => $post->getTitle(),
 	));
 })->name('single_post');
 
@@ -49,6 +50,7 @@ $app->get('/archives', function () use($app) {
 	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
 	$app->render('archives.php', array(
 		'posts' => $blog->getPosts(),
+		'title' => 'Archives',
 	));
 })->name('archives');
 
@@ -58,6 +60,7 @@ $app->get('/category/:name', function ($name) use($app) {
 	$app->render('category.php', array(
 		'category' => $name,
 		'posts' => $blog->getCategory($name),
+		'title' => $name,
 	));
 })->name('category');
 
@@ -66,7 +69,8 @@ $app->get('/category/:name', function ($name) use($app) {
 $app->get('/add', $locked(), function() use($app) {
 	$post = new stojg\puny\models\Post('posts/');
 	$app->render('edit.php', array(
-		'post' => $post
+		'post' => $post,
+		'title' => 'New post'
 	));
 })->name('add');
 
