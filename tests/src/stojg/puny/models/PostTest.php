@@ -57,7 +57,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	 * @covers Stojg\Puny\Post::setMetadata
 	 */
 	public function testGetDate() {
-		$this->assertEquals('2012-06-07 17:42:00', $this->object->getDate());
+		$this->assertEquals('2012-06-07 17:42', $this->object->getDate());
 	}
 
 	/**
