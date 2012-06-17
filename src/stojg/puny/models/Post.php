@@ -2,9 +2,8 @@
 namespace stojg\puny\models;
 
 /**
- * Description of Post
+ * Represents a single post
  *
- * @author stig
  */
 class Post {
 
@@ -12,43 +11,19 @@ class Post {
 	 *
 	 * @var string
 	 */
-	protected $filename = '';
+	protected $content = '';
 
 	/**
 	 *
 	 * @var string
 	 */
-	protected $metaDivider = "---";
+	protected $title = '';
 
 	/**
 	 *
 	 * @var string
 	 */
-	protected $content;
-
-	/**
-	 *
-	 * @var string
-	 */
-	protected $layout;
-
-	/**
-	 *
-	 * @var string
-	 */
-	protected $title;
-
-	/**
-	 *
-	 * @var boolean
-	 */
-	protected $comments;
-
-	/**
-	 *
-	 * @var string
-	 */
-	protected $date;
+	protected $date = '';
 
 	/**
 	 *
@@ -57,84 +32,117 @@ class Post {
 	protected $categories = array();
 
 	/**
+	 * Have we loaded the post from the filesystem
 	 *
 	 * @var boolean
 	 */
-	protected $loaded = false;
+	private $loaded = false;
+
+	/**
+	 * The raw content for the file
+	 *
+	 * @var string
+	 */
+	private $rawContent = '';
+
+	/**
+	 * The extension use for the file
+	 *
+	 * @var string
+	 */
+	private static $file_extension ='.md';
 
 	/**
 	 *
 	 * @var string
 	 */
-	protected $cacheKey = '';
+	private $filename = '';
 
 	/**
+	 * This marks the content within two of these signs on a single line as meta
+	 * data
+	 *
 	 * @var string
 	 */
-	protected $fileContents = '';
+	private $metaDivider = "---";
+
+	public static function extension() {
+		return self::$file_extension;
+	}
 	
 	/**
 	 *
-	 * @param string $filepath
+	 * @param string $filename - the filepath without extension
 	 */
-	public function __construct($filepath=null) {
+	public function __construct($filename = null) {
 		// new post
-		if(!$filepath) {
+		if(!$filename) {
 			return;
 		}
-		$this->filename = $filepath;
-		$this->cacheKey = sha1_file($this->filename);
-	}
-
-	public function getCacheKey() {
-		return $this->cacheKey;
+		$this->filename = $filename;
 	}
 
 	/**
+	 * Get this posts unique identifier (sha1)
 	 *
 	 * @return string
 	 */
-	public function toHTML() {
+	public function getID() {
+		return sha1_file($this->filename);
+	}
+
+	/**
+	 * Get this posts content as html transformed through markdown
+	 *
+	 * @return string
+	 */
+	public function getContentHTML() {
 		$markdown = new \dflydev\markdown\MarkdownParser();
 		return $markdown->transformMarkdown($this->getContent());
 	}
 
 	/**
+	 * Set the post title
 	 *
 	 * @param string $title
 	 * @return \stojg\puny\models\Post
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
+		$this->updateRawContent();
 		return $this;
 	}
 
 	/**
+	 * Get the post title
 	 *
 	 * @return string
 	 */
 	public function getTitle() {
-		$this->loadData();
+		$this->load();
 		return $this->title;
 	}
 
 	/**
+	 * Set the date to anything that strtotime() can handle.
 	 *
 	 * @param string $date
 	 * @return \stojg\puny\models\Post
 	 */
 	public function setDate($date) {
 		$this->date = date('Y-m-d H:i', strtotime($date));
+		$this->updateRawContent();
 		return $this;
 	}
 
 	/**
+	 * Get the date
 	 *
 	 * @param string $format
 	 * @return string
 	 */
 	public function getDate($format = 'Y-m-d H:i') {
-		$this->loadData();
+		$this->load();
 		if(!$this->date) {
 			$this->date = 'now';
 		}
@@ -148,112 +156,136 @@ class Post {
 	 */
 	public function setCategories($categories) {
 		$this->categories = explode(',', $categories);
+		$this->updateRawContent();
 		return $this;
 	}
 
 	/**
+	 * Get the categories
 	 *
 	 * @return array
 	 */
 	public function getCategories() {
-		$this->loadData();
+		$this->load();
 		return $this->categories;
 	}
 
 	/**
+	 * Get the base filename without the file extension and directory for usage
+	 * in URL
 	 *
 	 * @return string
 	 */
-	public function getURL() {
-		return str_replace('.md', '', basename($this->filename));
+	public function basename() {
+		return str_replace(Post::extension(), '', basename($this->filename));
 	}
 
 	/**
+	 * Set the content data
 	 *
 	 * @param string $content
 	 * @return \stojg\puny\models\Post
 	 */
 	public function setContent($content) {
 		$this->content = $content;
+		$this->updateRawContent();
 		return $this;
 	}
 
 	/**
-	 * Get the raw contents
+	 * Get the content without meta data
 	 *
 	 * @return string
 	 */
 	public function getContent() {
-		$this->loadData();
+		$this->load();
 		return $this->content;
 	}
 
 	/**
+	 * Load data for this post from disk
 	 *
 	 */
-	public function save($directory) {
-		$fileContent = "---".PHP_EOL;
-		$fileContent.= 'layout: post'.PHP_EOL;
-		$fileContent.= 'title: "'.$this->title.'"'.PHP_EOL;
-		$fileContent.= 'date: '.$this->date.PHP_EOL;
-		$fileContent.= 'comments: true'.PHP_EOL;
-		$fileContent.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
-		$fileContent.= '---'.PHP_EOL;
-		$fileContent.= $this->content;
-		
-		$filename = date('Y-m-d', strtotime($this->date));
-		$filename.= '-'.preg_replace('/[^A-Za-z0-9]/', '-', $this->title);
-		$filename = $directory.DIRECTORY_SEPARATOR.strtolower($filename).'.md';
-
-		$fh = fopen($filename, 'w');
-		flock($fh, LOCK_EX);
-		fwrite($fh, $fileContent, strlen($fileContent));
-		flock($fh, LOCK_UN);
-		fclose($fh);
-
-		if($filename !== $this->filename) {
-			if(file_exists($this->filename) && is_file($this->filename)) {
-				unlink($this->filename);
-			}
-			$this->filename = $filename;
-		}
-	}
-
-	/**
-	 *
-	 */
-	protected function loadData() {
+	protected function load() {
 		if($this->loaded) {
 			return;
 		}
+
 		$fileContent = $this->fileGetContents($this->filename);
-		
+
+		// File is empty or doesn't exists
 		if(!$fileContent) {
 			$this->loaded = true;
 			return;
 		}
 
-		$this->fileContents = $fileContent;
-		$startMeta = strpos($fileContent, $this->metaDivider);
-		$endMeta = strpos($fileContent, $this->metaDivider, 1);
-		if($startMeta === 0 && $endMeta) {
-			$metaData = substr($fileContent, $startMeta, $endMeta+strlen($this->metaDivider));
-			$this->setMetadata($metaData);
-			$fileContent = substr_replace($fileContent, '', $startMeta, $endMeta+strlen($this->metaDivider));
-		}
-		
-		$this->content = trim($fileContent);
+		$this->rawContent = $fileContent;
+		$this->content = $this->setMetadata($this->rawContent);
 		$this->loaded = true;
 	}
 
+	/**
+	 * Save this post on disk
+	 */
+	public function save($directory) {
+		$filename = $directory . DIRECTORY_SEPARATOR . $this->getFilename();
+		$this->filePutContents($filename, $this->rawContent);
+		
+		// If the filename has changed, remove the old file if exists
+		if($filename !== $this->filename && is_file($this->filename)) {
+			unlink($this->filename);
+		}
+		$this->filename = $filename;
+	}
 
 	/**
-	 *
-	 * @param string $string
+	 * Update the raw content to match new data. This method should be called
+	 * everytime a data changes
+	 * 
 	 */
-	protected function setMetadata($string) {
-		$lines = explode(PHP_EOL, $string);
+	protected function updateRawContent() {
+		$content = "---".PHP_EOL;
+		$content.= 'title: "'.$this->title.'"'.PHP_EOL;
+		$content.= 'date: '.$this->date.PHP_EOL;
+		$content.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
+		$content.= '---'.PHP_EOL;
+		$content.= $this->content;
+		$this->rawContent = $content;
+	}
+
+	/**
+	 * By using the date and title get a filename for this post
+	 *
+	 * @return string
+	 */
+	protected function getFilename() {
+		$newFilename = date('Y-m-d', strtotime($this->date));
+		$newFilename.= '-'.preg_replace('/[^A-Za-z0-9]/', '-', $this->title);
+		return  strtolower($newFilename).Post::extension();
+	}
+
+	/**
+	 * Extract the metadata from the string and return the rest
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	protected function setMetadata($content) {
+		$metaStart = strpos($content, $this->metaDivider);
+		$metaEnd = strpos($content, $this->metaDivider, 1);
+
+		// No meta data found
+		if(!($metaStart === 0 && $metaEnd)) {
+			return trim($content);
+		}
+		
+		$metaContent = substr($content, $metaStart, $metaEnd+strlen($this->metaDivider));
+		$lines = explode(PHP_EOL, $metaContent);
+		
 		foreach($lines as $line) {
+			// The strpos of the divider between the property and the value
+			// Using strpos instead of explode so that values can have : in them
+			// as well
 			$dividerPos = strpos($line, ':');
 			if($dividerPos === false) {
 				continue;
@@ -262,26 +294,27 @@ class Post {
 			$property = trim(substr($line, 0, $dividerPos));
 			$value = trim(substr($line, $dividerPos+1));
 
-			if(!$property || !$value) {
+			if(!property_exists($this, $property) || !$value) {
 				continue;
 			}
 
-			if(strpos($value, '"') === 0) {
-				$value = str_replace('"', '',$value);
-			}
+			// Remove " signs
+			$value = str_replace('"', '', $value);
 
+			// Looks like an array
 			if(strstr($value, '[')) {
 				$value = str_replace(array('[',']'), '', $value);
 				$value = explode(',', $value);
 			}
 
 			$this->$property = $value;
-
-			
 		}
+		
+		return trim(str_replace($metaContent, '', $content));
 	}
 
 	/**
+	 * Get the contents from the file in a lock safe way
 	 *
 	 * @param string $filename
 	 * @return boolean
@@ -301,5 +334,21 @@ class Post {
 		flock($fh, LOCK_UN);
 		fclose($fh);
 		return trim($content);
+	}
+
+	/**
+	 * Get the contents from the file in a lock safe way
+	 *
+	 * @param string $filename
+	 * @param string $content
+	 * @return boolean
+	 */
+	protected function filePutContents($filename, $content) {
+		$fh = fopen($filename, 'w');
+		flock($fh, LOCK_EX);
+		fwrite($fh, $content, strlen($content));
+		flock($fh, LOCK_UN);
+		fclose($fh);
+		return true;
 	}
 }

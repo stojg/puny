@@ -62,12 +62,15 @@ class BlogTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers stojg\puny\models\Blog::getCacheKey
+	 * @covers stojg\puny\models\Blog::getID
 	 */
-	public function testGetCacheKey() {
-		$this->assertNotNull($this->object->getCacheKey());
+	public function testGetID() {
+		$this->assertNotNull($this->object->getID());
 	}
 
+	/**
+	 * @covers stojg\puny\models\Blog::getCategory
+	 */
 	public function testCategory() {
 		$posts = $this->object->getCategory('quiz');
 		$this->assertEquals(2, count($posts));

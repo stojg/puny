@@ -8,7 +8,7 @@
 		<?php foreach($posts as $post) { ?>
 		<article>
 			<h1 class="title">
-				<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->getURL())); ?>">
+				<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>">
 					<?php echo $post->getTitle(); ?>
 				</a>
 			</h1>

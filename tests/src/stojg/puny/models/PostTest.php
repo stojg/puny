@@ -29,8 +29,8 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers stojg\puny\models\Post::toHTML
-	 * @covers stojg\puny\models\Post::setMetadata
+	 * @covers stojg\puny\models\Post::getContentHTML
+	 * @covers stojg\puny\models\Post::load
 	 */
 	public function testToHTML() {
 		// Remove the following lines when you implement this test.
@@ -40,7 +40,7 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 
 <p>Usually it's three europeans and one kiwi, but tonight we're getting some help from the french nation.</p>
 ";
-		$this->assertEquals($expected, $this->object->toHTML());
+		$this->assertEquals($expected, $this->object->getContentHTML());
 	}
 
 	/**
@@ -66,6 +66,9 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('2012-01-01 12:01', $this->object->getDate());
 	}
 
+	/**
+	 * @covers stojg\puny\models\Post::getDate
+	 */
 	public function testGetDateEmptyIsNow() {
 		$post = new \stojg\puny\models\Post('/tmp/');
 		$this->assertEquals(date('Y-m-d H:i'), $post->getDate());
@@ -87,12 +90,12 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers stojg\puny\models\Post::getURL
+	 * @covers stojg\puny\models\Post::basename
 	 * @covers stojg\puny\models\Post::setMetadata
 	 */
-	public function testGetURL() {
+	public function testBasename() {
 		$expected = '2012-06-07-quiz-night';
-		$this->assertEquals($expected, $this->object->getURL());
+		$this->assertEquals($expected, $this->object->basename());
 	}
 
 	/**

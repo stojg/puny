@@ -58,10 +58,10 @@ class Cached {
 	 * @return boolean
 	 */
 	protected function getCache($methodName, $arguments, &$data) {
-		if(!$this->cacheIsEnabled()) {
+		if(!$this->canCache()) {
 			return false;
 		}
-		$cacheKey = $this->object->getCacheKey().$methodName.md5(serialize($arguments));
+		$cacheKey = $this->object->getID().$methodName.md5(serialize($arguments));
 		$data = apc_fetch($cacheKey, $cacheHit);
 		return $cacheHit;
 	}
@@ -74,10 +74,10 @@ class Cached {
 	 * @return boolean
 	 */
 	protected function setCache($methodName, $arguments, $data) {
-		if(!$this->cacheIsEnabled()) {
+		if(!$this->canCache()) {
 			return false;
 		}
-		$cacheKey = $this->object->getCacheKey().$methodName.md5(serialize($arguments));
+		$cacheKey = $this->object->getID().$methodName.md5(serialize($arguments));
 		apc_store($cacheKey, $data);
 	}
 
@@ -85,11 +85,8 @@ class Cached {
 	 *
 	 * @return boolean
 	 */
-	protected function cacheIsEnabled() {
-		if(!function_exists('apc_fetch')) {
-			return false;
-		}
-		if(!method_exists($this->object, 'getCacheKey')) {
+	protected function canCache() {
+		if(!function_exists('apc_fetch') || !method_exists($this->object, 'getID')) {
 			return false;
 		}
 		return true;

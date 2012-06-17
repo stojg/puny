@@ -27,7 +27,7 @@
 
 	<div class="meta">
 		<div class="view">
-			<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->getURL())); ?>">
+			<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>">
 				View post
 			</a>
 		</div>

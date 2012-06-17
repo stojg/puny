@@ -83,7 +83,7 @@ $app->post('/add', $locked(), function() use($app) {
 		->setCategories($req->post('categories'))
 		->save('posts');
 	$app->flash('info', 'You just create a new post.');
-	$app->redirect($app->urlFor('edit', array('url'=>$post->getURL())));
+	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
 // Single post Edit
@@ -105,7 +105,7 @@ $app->post('/edit/:url', $locked(), function ($url) use($app) {
 		->setCategories($req->post('categories'))
 		->save('posts');
 	$app->flash('info', 'You just saved something');
-	$app->redirect($app->urlFor('edit', array('url'=>$post->getURL())));
+	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
 // Login
