@@ -1,7 +1,5 @@
 <?php require 'partials/header.php'; ?>
-
 <article class="post">
-
 	<div class="entry-content">
 		<form method="post">
 			<div class="field">
@@ -24,7 +22,6 @@
 			</div>
 		</form>
 	</div>
-
 	<div class="meta">
 		<div class="view">
 			<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>">
