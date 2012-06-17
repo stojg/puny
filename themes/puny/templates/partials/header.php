@@ -47,7 +47,6 @@
 				<div class="social">
 					<a class="google" href="https://plus.google.com/115001706055384421894" title="Google+">Google+</a>
 					<a class="twitter" href="http://twitter.com/stojg" title="Twitter">Twitter</a>
-					<a class="rss" href="/atom.xml" title="RSS">RSS</a>
 				</div>
 				<form class="search" action="http://google.com/search" method="get">
 					<input class="alignright" type="text" name="q" results="0">
