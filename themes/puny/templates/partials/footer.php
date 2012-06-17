@@ -2,7 +2,14 @@
 		<footer id="footer" class="inner">
 			Copyright &copy; 2012 Stig Lindqvist
 		</footer>
-		<script src="<?php echo THEME_URL;?>javascripts/minified.js"></script>
+		<!--<script src="<?php echo THEME_URL;?>javascripts/minified.js"></script>-->
+		<script src="<?php echo THEME_URL;?>javascripts/jquery.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/jquery.autosize.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/jquery.fancybox.pack.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/modernizr-2.0.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/twitter.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/slash.js"></script>
+		<script src="<?php echo THEME_URL;?>javascripts/puny.js "></script>
 		
 		<script type="text/javascript">
 			(function($){

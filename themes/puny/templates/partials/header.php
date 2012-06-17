@@ -65,8 +65,6 @@
 			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
 			<div class="loading">Loading...</div>
 		</div>
-
-		<div id="content" class="inner">
 		<?php if(isset($flash) && $flash) { ?>
 			<div class="flashmessage ">
 				<?php foreach($flash->getMessages() as $type => $message) { ?>
@@ -74,3 +72,4 @@
 				<?php } ?>
 			</div>
 		<?php } ?>
+		<div id="content" class="inner">

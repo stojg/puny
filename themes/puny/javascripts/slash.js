@@ -59,4 +59,9 @@
 	}).click(function(e){
 		e.stopPropagation();
 	});
+
+	$('textarea').autosize();
+
+	$('div.flashmessage').fadeOut(5000);
+	
 })(jQuery);
