@@ -2,6 +2,7 @@
 /vendor/
 composer.lock
 composer.phar
+/posts/*
 /tmp
 themes/puny/javascripts/compiler.jar
 themes/puny/javascripts/compress.sh
