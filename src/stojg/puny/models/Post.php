@@ -77,21 +77,17 @@ class Post {
 	 *
 	 * @param string $filepath
 	 */
-	public function __construct($filepath) {
+	public function __construct($filepath=null) {
+		// new post
+		if(!$filepath) {
+			return;
+		}
 		$this->filename = $filepath;
 		$this->cacheKey = sha1_file($this->filename);
 	}
 
 	public function getCacheKey() {
 		return $this->cacheKey;
-	}
-
-	/**
-	 *
-	 * @return string
-	 */
-	public function getRaw() {
-		return $this->fileContents;
 	}
 
 	/**
@@ -227,15 +223,16 @@ class Post {
 	 *
 	 */
 	protected function loadData() {
-		if($this->filename === 'posts/') {
-			$this->loaded = true;
-			return;
-		}
 		if($this->loaded) {
 			return;
 		}
-
 		$fileContent = $this->fileGetContents($this->filename);
+		
+		if(!$fileContent) {
+			$this->loaded = true;
+			return;
+		}
+
 		$this->fileContents = $fileContent;
 		$startMeta = strpos($fileContent, $this->metaDivider);
 		$endMeta = strpos($fileContent, $this->metaDivider, 1);
@@ -286,7 +283,7 @@ class Post {
 
 	/**
 	 *
-	 * @param type $filename
+	 * @param string $filename
 	 * @return boolean
 	 */
 	protected function fileGetContents($filename) {

@@ -19,7 +19,11 @@ class Blog {
 	 */
 	protected $files = array();
 
-	protected $cacheKey = '';
+	/**
+	 *
+	 * @var string
+	 */
+	protected $cacheKey = null;
 
 	/**
 	 * The directory of all posts
@@ -35,6 +39,10 @@ class Blog {
 		}
 	}
 
+	/**
+	 *
+	 * @return string
+	 */
 	public function getCacheKey() {
 		return $this->cacheKey;
 	}

@@ -22,7 +22,7 @@ class BlogTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers Stojg\Puny\BlogFile::getPosts
+	 * @covers stojg\puny\models\Blog::getPosts
 	 */
 	public function testGetPosts() {
 		$this->assertEquals(6, count($this->object->getPosts()));
@@ -44,7 +44,7 @@ class BlogTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers Stojg\Puny\BlogFile::getPost
+	 * @covers stojg\puny\models\Blog::getPost
 	 */
 	public function testGetPost() {
 		$post = $this->object->getPost('2012-06-09-movie-night');
@@ -52,7 +52,23 @@ class BlogTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('movie night', $post->getTitle());
 	}
 
-	public function testGetCategory() {
+	/**
+	 * @covers stojg\puny\models\Blog::getPost
+	 */
+	public function testGetPostNoCache() {
+		$post = $this->object->getPost('2012-06-09-movie-night', false);
+		$this->assertTrue($post instanceof \stojg\puny\models\Post, get_class($post));
+		$this->assertEquals('movie night', $post->getTitle());
+	}
+
+	/**
+	 * @covers stojg\puny\models\Blog::getCacheKey
+	 */
+	public function testGetCacheKey() {
+		$this->assertNotNull($this->object->getCacheKey());
+	}
+
+	public function testCategory() {
 		$posts = $this->object->getCategory('quiz');
 		$this->assertEquals(2, count($posts));
 	}

@@ -22,15 +22,15 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::__construct
+	 * @covers stojg\puny\models\Post::__construct
 	 */
 	public function testInit() {
 		$this->assertTrue($this->object instanceof Post);
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::toHTML
-	 * @covers Stojg\Puny\Post::setMetadata
+	 * @covers stojg\puny\models\Post::toHTML
+	 * @covers stojg\puny\models\Post::setMetadata
 	 */
 	public function testToHTML() {
 		// Remove the following lines when you implement this test.
@@ -44,25 +44,37 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::getTitle
-	 * @covers Stojg\Puny\Post::setMetadata
+	 * @covers stojg\puny\models\Post::getTitle
+	 * @covers stojg\puny\models\Post::setTitle
+	 * @covers stojg\puny\models\Post::setMetadata
 	 */
 	public function testGetTitle() {
 		$expected = 'Quiz night';
 		$this->assertEquals($expected, $this->object->getTitle());
+		$this->object->setTitle('New title');
+		$this->assertEquals('New title', $this->object->getTitle());
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::getDate
-	 * @covers Stojg\Puny\Post::setMetadata
+	 * @covers stojg\puny\models\Post::getDate
+	 * @covers stojg\puny\models\Post::setDate
+	 * @covers stojg\puny\models\Post::setMetadata
 	 */
 	public function testGetDate() {
 		$this->assertEquals('2012-06-07 17:42', $this->object->getDate());
+		$this->object->setDate('2012-01-01 12:01');
+		$this->assertEquals('2012-01-01 12:01', $this->object->getDate());
+	}
+
+	public function testGetDateEmptyIsNow() {
+		$post = new \stojg\puny\models\Post('/tmp/');
+		$this->assertEquals(date('Y-m-d H:i'), $post->getDate());
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::getCategories
-	 * @covers Stojg\Puny\Post::setMetadata
+	 * @covers stojg\puny\models\Post::getCategories
+	 * @covers stojg\puny\models\Post::setCategories
+	 * @covers stojg\puny\models\Post::setMetadata
 	 */
 	public function testGetCategories() {
 		$expected = array(
@@ -70,11 +82,13 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 			1 => 'bar'
 		);
 		$this->assertEquals($expected, $this->object->getCategories());
+		$this->object->setCategories('one,two,three');
+		$this->assertEquals(array('one','two','three'), $this->object->getCategories());
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::getURL
-	 * @covers Stojg\Puny\Post::setMetadata
+	 * @covers stojg\puny\models\Post::getURL
+	 * @covers stojg\puny\models\Post::setMetadata
 	 */
 	public function testGetURL() {
 		$expected = '2012-06-07-quiz-night';
@@ -82,8 +96,6 @@ class PostTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @covers Stojg\Puny\Post::getContent
-	 * @covers Stojg\Puny\Post::setMetadata
 	 */
 	public function testGetContent() {
 		$expected = "It's that time in the week when 'A foreign affair' goes to the quiz-night at the Grands. We usually ends up at the bottom half in the results. This might be the result of the lack of knowledge we have in things not categorized in either technology, movies or music.
@@ -92,8 +104,22 @@ Sometimes we've been lucky enough to hit the second to last place, that given us
 
 Usually it's three europeans and one kiwi, but tonight we're getting some help from the french nation.";
 		$this->assertEquals($expected, $this->object->getContent());
+
+		$this->object->setContent('This is the new content');
+		$this->assertEquals('This is the new content', $this->object->getContent());
 	}
 
-}
+	public function testSave() {
+		$post = new Post();
+		$post->setDate('2012-01-01 12:12');
+		$post->setTitle('New Post');
+		$post->setContent('New content');
+		$post->save('/tmp/');
 
-?>
+		$newPost = new Post('/tmp/2012-01-01-new-post.md');
+		$this->assertEquals('New Post', $post->getTitle());
+
+		$newPost->setTitle('change-url');
+		$newPost->save('/tmp/');
+	}
+}
