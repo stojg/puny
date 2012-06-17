@@ -59,7 +59,7 @@
 			<div class="container">
 				<ul class="feed"></ul>
 			</div>
-			<small><a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>
+			
 			<div class="loading">Loading...</div>
 		</div>
 		<?php if(isset($flash) && $flash) { ?>
