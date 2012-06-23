@@ -993,12 +993,16 @@ article .entry-content .video-container embed{
 	border-bottom:1px solid #ddd
 }
 
-.post h1.title,.post .entry-content{
+.post h1.title,
+.post .entry-content,
+.comments {
 	margin-left:200px
 }
 
 @media screen and (max-width: 800px){
-	.post h1.title,.post .entry-content{
+	.post h1.title,
+	.post .entry-content,
+	.comments{
 		margin-left:0
 	}
 }
