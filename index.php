@@ -98,7 +98,7 @@ $app->post('/edit/:url', $locked(), function ($url) use($app) {
 		->setDate($req->post('date'))
 		->setCategories($req->post('categories'))
 		->save('posts');
-	$app->flash('info', 'You just saved something');
+	$app->flash('info', 'Post have been saved');
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
