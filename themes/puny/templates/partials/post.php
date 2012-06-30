@@ -24,5 +24,6 @@
 			<a href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit post</a>
 		</div>
 		<?php } ?>
+		<div class="g-plusone" data-size="small" data-width="198" data-annotation="inline" data-href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>"></div> 
 	</div>
 </article>
