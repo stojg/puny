@@ -4,7 +4,11 @@
 		<meta charset="utf-8">
 		<title><?php if(isset($title)){echo $title.' - ';}?>My Journal</title>
 		<meta name="author" content="Stig Lindqvist">
-		<meta name="description" content="">
+		<?php
+		if(isset($posts)) { $post = $posts[0]; }
+		if(isset($post)) { ?>
+		<meta name="description" content="<?php echo $post->getDescription();?>">
+		<?php } ?>
 		<meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 		<link rel="canonical" href="">
 		<link href="<?php echo BASE_URL;?>favicon.png" rel="shortcut icon">

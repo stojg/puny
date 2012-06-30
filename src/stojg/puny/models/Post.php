@@ -203,6 +203,14 @@ class Post {
 	}
 
 	/**
+	 * Get a summary / description good for meta description field
+	 */
+	public function getDescription() {
+		preg_match('/^([^.!?]*[\.!?]+){0,3}/', strip_tags($this->getContent()), $abstract);
+		return $abstract[0];
+	}
+
+	/**
 	 * Load data for this post from disk
 	 *
 	 */
