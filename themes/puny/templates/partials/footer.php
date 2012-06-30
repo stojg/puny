@@ -24,9 +24,8 @@
 		</script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-20319066-3']);
+			_gaq.push(['_setAccount', '<?php echo GOOGLE_ANALYTICS_CODE; ?>']);
 			_gaq.push(['_trackPageview']);
-
 			(function() {
 				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
