@@ -1,0 +1,15 @@
+<?php
+// Copy this file to config.php and modify accordingly
+
+// Path to docroot on disk
+define('BASE_PATH', __DIR__);
+// Path to docroot relative to webserver root
+define('BASE_URL', rtrim($_SERVER['SCRIPT_NAME'], 'index.php'));
+// Path to theme folder relative to webserver root
+define('THEME_URL', BASE_URL . 'themes/puny/');
+// username 
+define('USERNAME', 'admin');
+// password
+define('PASSWORD', 'password');
+// Google analutics
+define('GOOGLE_ANALYTICS_CODE', 'UA-XXXXXXXX-X');

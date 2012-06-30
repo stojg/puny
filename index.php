@@ -1,16 +1,6 @@
 <?php
-// Path to docroot on disk
-define('BASE_PATH', __DIR__);
-// Path to docroot relative to webserver root
-define('BASE_URL', rtrim($_SERVER['SCRIPT_NAME'], basename(__FILE__)));
-// Path to theme folder relative to webserver root
-define('THEME_URL', BASE_URL . 'themes/puny/');
-// Get the username from the environemnt
-define('USERNAME', getenv('USERNAME'));
-// Get the password from the environemnt
-define('PASSWORD', getenv('PASSWORD'));
-// Google analutics code from the environment
-define('GOOGLE_ANALYTICS_CODE', getenv('GOOGLE_ANALYTICS_CODE'));
+// get the configuration
+require 'config.php';
 // Use composer autoloader
 require 'vendor/autoload.php';
 

@@ -6,3 +6,4 @@ composer.phar
 /tmp
 themes/puny/javascripts/compiler.jar
 themes/puny/javascripts/compress.sh
+config.php
