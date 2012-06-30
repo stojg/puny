@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title><?php if(isset($title)){echo $title.' - ';}?>My Journal</title>
+		<title><?php if(isset($title)){echo $title.' - ';}?>Stig's Journal</title>
 		<meta name="author" content="Stig Lindqvist">
 		<?php
 		if(isset($posts)) { $post = $posts[0]; }
@@ -20,7 +20,7 @@
 	<body>
 		<header id="header" class="inner">
 			<h1>
-				<a href="<?php echo $app->urlFor('index'); ?>">My Journal</a>
+				<a href="<?php echo $app->urlFor('index'); ?>">Stig's Journal</a>
 			</h1>
 			<nav id="main-nav">
 				<ul class="main">
