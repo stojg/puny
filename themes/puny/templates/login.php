@@ -5,18 +5,24 @@
 		<h1 class="title">
 			<a href="<?php echo $app->urlFor('login'); ?>">Login</a>
 		</h1>
+		<?php if(isset($flash) && $flash) { ?>
+		<div class="flashmessage ">
+			<?php foreach($flash->getMessages() as $type => $message) { ?>
+				<div class="<?php echo $type; ?>"><?php echo $message; ?></div>
+			<?php } ?>
+		</div>
+		<?php } ?>
 		<div class="entry-content">
-			<div class="input-prepend field">
-				<span class="add-on"><i class="icon-envelope"></i></span>
-				<input type="input" name="username" placeholder="Email address" size=40 />
+			<div class="field">
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" placeholder="Email address" size=40 />
 			</div>
-			<div class="input-prepend field">
-				<span class="add-on"><i class="icon-key"></i></span>
-				<input type="password" name="password" placeholder="Password" />
+			<div class="field">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password" placeholder="Password" />
 			</div>
-			<div class="input-prepend field">
-				<span class="add-on"><i class="icon-null"></i></span>
-				<input type="submit" class="btn-mini btn-inverse" value="Login" />
+			<div class="field">
+				<input type="submit" class="" value="Login" />
 			</div>
 		</div>
 	</form>
