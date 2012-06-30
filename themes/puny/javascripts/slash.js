@@ -61,7 +61,5 @@
 	});
 
 	$('textarea').autosize();
-
-	$('div.flashmessage').fadeOut(5000);
 	
 })(jQuery);
