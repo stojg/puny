@@ -22,7 +22,7 @@
 				<input type="password" id="password" name="password" placeholder="Password" />
 			</div>
 			<div class="field">
-				<input type="submit" class="" value="Login" />
+				<input class="uibutton large confirm" type="submit" class="" value="Login" />
 			</div>
 		</div>
 	</form>

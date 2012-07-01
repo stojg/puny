@@ -1,6 +1,9 @@
 		</div>
 		<footer id="footer" class="inner">
-			Copyright &copy; 2012 Stig Lindqvist
+				<?php if(!$user->valid()) { ?>
+				<a class="uibutton" href="<?php echo $app->urlFor('login'); ?>">Log in</a>
+				<?php } ?>
+			</ul>
 		</footer>
 		<script src="<?php echo THEME_URL;?>javascripts/minified.js"></script>
 		<?php /*
@@ -18,7 +21,7 @@
 		</script>
 		<script type="text/javascript">
 			(function($){
-				$('#banner').getTwitterFeed('stojg', 4, false);
+				$('div.banner').getTwitterFeed('stojg', 4, false);
 			})(jQuery);
 		</script>
 		<?php if(defined('GOOGLE_ANALYTICS_CODE') && GOOGLE_ANALYTICS_CODE) { ?>
@@ -37,15 +40,15 @@
 		<script type="text/javascript">
   			var _gauges = _gauges || [];
   			(function() {
-    		var t   = document.createElement('script');
-    		t.type  = 'text/javascript';
-    		t.async = true;
-    		t.id    = 'gauges-tracker';
-    		t.setAttribute('data-site-id', '4feef941613f5d5a4600004d');
-    		t.src = '//secure.gaug.es/track.js';
-    		var s = document.getElementsByTagName('script')[0];
-    	s.parentNode.insertBefore(t, s);
-  		})();
+	    		var t   = document.createElement('script');
+	    		t.type  = 'text/javascript';
+	    		t.async = true;
+	    		t.id    = 'gauges-tracker';
+	    		t.setAttribute('data-site-id', '4feef941613f5d5a4600004d');
+	    		t.src = '//secure.gaug.es/track.js';
+	    		var s = document.getElementsByTagName('script')[0];
+	    		s.parentNode.insertBefore(t, s);
+	  		})();
 	</script>
 	</body>
 </html>

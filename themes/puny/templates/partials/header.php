@@ -15,6 +15,7 @@
 		<link href="<?php echo THEME_URL;?>stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<link href="<?php echo THEME_URL;?>stylesheets/form.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<link href="<?php echo THEME_URL;?>stylesheets/font-awesome.css" media="screen, projection" rel="stylesheet" type="text/css">
+		<link href="<?php echo THEME_URL;?>stylesheets/fb-buttons.css" media="screen, projection" rel="stylesheet" type="text/css">
 		<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 	</head>
 	<body>
@@ -22,13 +23,13 @@
 			<h1>
 				<a href="<?php echo $app->urlFor('index'); ?>">Stig's Journal</a>
 			</h1>
-			<nav id="main-nav">
+			<nav class="main-nav">
 				<ul class="main">
 					<li><a href="<?php echo $app->urlFor('index'); ?>">Blog</a></li>
 					<li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
 				</ul>
 			</nav>
-			<nav id="mobile-nav">
+			<nav class="mobile-nav">
 				<div class="alignleft menu">
 					<a class="button">Menu</a>
 					<div class="container">
@@ -48,7 +49,7 @@
 					</div>
 				</div>
 			</nav>
-			<nav id="sub-nav" class="alignright">
+			<nav class="sub-nav alignright">
 				<div class="social">
 					<a class="google" href="https://plus.google.com/115001706055384421894" title="Google+">Google+</a>
 					<a class="twitter" href="http://twitter.com/stojg" title="Twitter">Twitter</a>
@@ -60,11 +61,27 @@
 			</nav>
 		</header>
 
-		<div id="banner" class="inner">
+		<div class="banner inner">
 			<div class="container">
 				<ul class="feed"></ul>
 			</div>
-			
 			<div class="loading">Loading...</div>
 		</div>
+
+		<?php if($user->valid()) { ?>
+		<div class="actions inner">
+			
+			<div class="uibutton-group">
+				<?php if(isset($post)) { ?>
+				<a class="uibutton icon edit right" href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit post</a>
+				<?php } ?>
+				<a class="uibutton icon add" href="<?php echo $app->urlFor('add'); ?>">Add post</a>
+			</div>
+			
+			<div class=" uibutton-group">
+				<a class="uibutton " href="<?php echo $app->urlFor('logout'); ?>">Logout</a>
+			</div>
+		</div>
+		<?php } ?>
+
 		<div id="content" class="inner">

@@ -27,14 +27,9 @@
 					<textarea name="content" rows="5"><?php echo $post->getContent(); ?></textarea>
 				</div>
 				<div class="field">
-					<input type="submit" value="Save" />
+					<input class="uibutton large confirm" type="submit" value="Save" />
 				</div>
-				
 			</div>
-
-			
-				
-			
 		</form>
 	</div>
 	<div class="meta">
