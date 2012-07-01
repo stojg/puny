@@ -2,16 +2,9 @@
 	margin: 5px 0;
 }
 
-label, input,textarea {
+label,input,textarea {
 	display: block;
-	font: 16px HelveticaNeue-Light;
 	padding: 5px;
-}
-
-label {
-	display: block;
-	float: left;
-	width: 80px;
 }
 
 input, textarea {
@@ -30,6 +23,17 @@ input, textarea {
 	-ms-transition: all 0.15s linear;
 	-o-transition: all 0.15s linear;
 	transition: all 0.15s linear;
+	font: 16px HelveticaNeue-Light;
+}
+
+textarea {
+	font: 11px "Droid Sans Mono", monospace;
+}
+
+label {
+	display: block;
+	float: left;
+	width: 80px;
 }
 
 input[type="text"], 

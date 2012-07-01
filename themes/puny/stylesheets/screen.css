@@ -10,6 +10,13 @@
 	font-style:normal
 }
 
+@font-face {
+	font-family: 'Droid Sans Mono';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Droid Sans Mono'), local('DroidSansMono'), url(http://themes.googleusercontent.com/static/fonts/droidsansmono/v4/ns-m2xQYezAtqh7ai59hJaH0X__W3S3MJL29bc5CWfs.woff) format('woff');
+}
+
 body{
 	font-family:"HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight:300;
@@ -1569,7 +1576,6 @@ div.banner{
 	color:#999;
 	padding:2px 0;
 	line-height:30px;
-	text-align:center;
 	position:relative;
 	display:none;
 	border-top:1px solid #fff;
@@ -1620,13 +1626,16 @@ div.banner .container .feed{
 }
 
 div.banner .container .feed li{
+	font: 10px "Droid Sans Mono", monospace;
+	line-height: 30px;
+	font-weight: normal;
 	position:relative;
 	
 }
 
 div.banner .container .feed li small{
-	position:absolute;
-	right:0
+	right:50px;
+	margin:0;
 }
 
 /* fancyBox v2.0.6 fancyapps.com | fancyapps.com/fancybox/#license */

@@ -62,7 +62,7 @@
 
 				for (var i=0; i<length; i++){
 					var item = document.createElement('li');
-					item.innerHTML = linkify(json[i].text) + '<small>'+relativeDate(json[i].created_at)+' - <a href="http://twitter.com/stojg">stojg</a> @ <a href="http://twitter.com">Twitter</a></small>';
+					item.innerHTML = linkify(json[i].text) + '<small>'+relativeDate(json[i].created_at)+'</small>';
 					fragment.appendChild(item);
 				}
 
