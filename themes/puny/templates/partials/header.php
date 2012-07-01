@@ -56,7 +56,7 @@
 				</div>
 				<form class="search" action="http://google.com/search" method="get">
 					<input class="alignright" type="text" name="q" results="0">
-					<input type="hidden" name="q" value="site:journal.stojg.se/">
+					<input type="hidden" name="q" value="site:stojg.se/">
 				</form>
 			</nav>
 		</header>
