@@ -7,7 +7,7 @@
 			var href = this.href,
 				link = href.replace(/https?:\/\/([^\/]+)(.*)/, '$1');
 
-			if (link != '' && link != host && !$(this).hasClass('fancybox')){
+			if (link !== '' && link != host && !$(this).hasClass('fancybox')){
 				window.open(href);
 				e.preventDefault();
 			}
@@ -21,7 +21,7 @@
 			$(this).find('img').each(function(){
 				var alt = this.alt;
 
-				if (alt != ''){
+				if (alt !== ''){
 					$(this).after('<span class="caption">'+alt+'</span>');
 				}
 
