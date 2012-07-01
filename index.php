@@ -124,4 +124,8 @@ $app->get('/logout', function() use($app) {
 	$app->redirect($app->request()->getRootUri());
 })->name('logout');
 
+$app->notFound(function () use ($app) {
+    $app->render('404.php');
+});
+
 $app->run();
