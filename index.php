@@ -33,8 +33,14 @@ $app->get('/', function () use($app) {
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
 	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$post = $blog->getPost($url);
+	if(!$post->exists()) {
+		$app->notFound();
+		return;
+	};
+	
 	$app->render('single_post.php', array(
-		'post' => $post = $blog->getPost($url),
+		'post' => $post,
 		'title' => $post->getTitle(),
 	));
 })->name('single_post');

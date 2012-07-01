@@ -202,6 +202,10 @@ class Post {
 		return $this->content;
 	}
 
+	public function exists() {
+		return $this->load();
+	}
+
 	/**
 	 * Get a summary / description good for meta description field
 	 */
@@ -216,7 +220,7 @@ class Post {
 	 */
 	protected function load() {
 		if($this->loaded) {
-			return;
+			return true;
 		}
 
 		$fileContent = $this->fileGetContents($this->filename);
@@ -224,12 +228,13 @@ class Post {
 		// File is empty or doesn't exists
 		if(!$fileContent) {
 			$this->loaded = true;
-			return;
+			return false;
 		}
 
 		$this->rawContent = $fileContent;
 		$this->content = $this->setMetadata($this->rawContent);
 		$this->loaded = true;
+		return true;
 	}
 
 	/**
