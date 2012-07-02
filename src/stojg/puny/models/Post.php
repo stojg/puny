@@ -202,6 +202,10 @@ class Post {
 		return $this->content;
 	}
 
+	/**
+	 * Returns true if this page exists
+	 * @return [type] [description]
+	 */
 	public function exists() {
 		return $this->load();
 	}
@@ -209,9 +213,29 @@ class Post {
 	/**
 	 * Get a summary / description good for meta description field
 	 */
-	public function getDescription() {
-		preg_match('/^([^.!?]*[\.!?]+){0,3}/', strip_tags($this->getContent()), $abstract);
-		return $abstract[0];
+	public function getDescription($maxWords=30) {
+
+		$text=strip_tags($this->getContent());
+		$text = trim(preg_replace("/\s+/"," ",$text));
+
+		$word_array = explode(" ", $text);
+
+		if(count($word_array) <= $maxWords) {
+			return implode(" ",$word_array);
+		} else {
+			$text='';
+		}
+
+		foreach ($word_array as $length=>$word) {
+    		$text.=$word ;
+    		if($length==$maxWords
+    ) {
+    			break;
+    		} else {
+    			$text.=" ";
+    		}
+		}
+		return $text;
 	}
 
 	/**
