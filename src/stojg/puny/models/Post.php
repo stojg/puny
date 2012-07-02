@@ -342,8 +342,9 @@ class Post {
 			if(strstr($value, '[')) {
 				$value = str_replace(array('[',']'), '', $value);
 				$value = explode(',', $value);
+				$value = array_map('trim', $value);
+				$value = array_filter($value, 'strlen');
 			}
-
 			$this->$property = $value;
 		}
 		
