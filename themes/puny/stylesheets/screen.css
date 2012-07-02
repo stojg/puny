@@ -949,7 +949,6 @@ article .entry-content .video-container embed{
 
 .post h1.title,
 .post .entry-content,
-.flashmessage,
 .comments {
 	margin-left:200px
 }
@@ -957,7 +956,6 @@ article .entry-content .video-container embed{
 @media screen and (max-width: 800px){
 	.post h1.title,
 	.post .entry-content,
-	.flashmessage,
 	.comments{
 		margin-left:0
 	}

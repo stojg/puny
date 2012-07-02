@@ -7,7 +7,7 @@
 		<?php } ?>
 	</div>
 	<?php } ?>
-	<div class="entry-content">
+	<div class="">
 		<form method="post">
 			<div class="field">
 				<div class="field">
@@ -16,7 +16,7 @@
 				</div>
 				<div class="field">
 					<label for="categories">Categories</label>
-					<input size="40" type="text" name="categories" value="<?php echo implode(',', $post->getCategories());?>" placeholder="Categories separated with commas" />
+					<input size="60" type="text" name="categories" value="<?php echo implode(',', $post->getCategories());?>" placeholder="Categories separated with commas" />
 				</div>
 				<div class="field">
 					<label for="date">Date</label>
@@ -24,20 +24,13 @@
 				</div>
 				<div class="field">
 					<label for="content">Content</label>
-					<textarea name="content" rows="5"><?php echo $post->getContent(); ?></textarea>
+					<textarea name="content" rows="5" cols="75"><?php echo $post->getContent(); ?></textarea>
 				</div>
 				<div class="field">
 					<input class="uibutton large confirm" type="submit" value="Save" />
 				</div>
 			</div>
 		</form>
-	</div>
-	<div class="meta">
-		<div class="view">
-			<a href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>">
-				View post
-			</a>
-		</div>
 	</div>
 </article>
 <nav id="pagenavi">

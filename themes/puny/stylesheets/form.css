@@ -23,11 +23,11 @@ input, textarea {
 	-ms-transition: all 0.15s linear;
 	-o-transition: all 0.15s linear;
 	transition: all 0.15s linear;
-	font: 16px HelveticaNeue-Light;
+	font: 14px "Droid Sans Mono", monospace;
 }
 
 textarea {
-	font: 11px "Droid Sans Mono", monospace;
+	font: 14px "Droid Sans Mono", monospace;
 }
 
 label {
@@ -36,19 +36,24 @@ label {
 	width: 80px;
 }
 
-input[type="text"], 
-input[type="datetime"], 
-textarea {
-	width: 450px;
+@media screen and (max-width: 800px){
+	textarea,
+	input[type="text"],
+	input[type="datetime"] {
+		font-size: 12px;
+	}
 }
 
 @media screen and (max-width: 600px){
-	label {
-		float: none;
-	}
 	textarea,
-	input[type="text"], 
+	input[type="text"],
 	input[type="datetime"] {
-		width: 90%;
+		clear: both;
+		font-size: 10px;
+		
 	} 
+	textarea,
+	input[type="text"] {
+		width: 90%;
+	}
 }
