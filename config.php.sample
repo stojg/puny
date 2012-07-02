@@ -1,15 +1,20 @@
 <?php
 // Copy this file to config.php and modify accordingly
 
-// Path to docroot on disk
+// The name of the theme to use
+define('THEME_NAME', 'puny');
+// Set an username
+define('USERNAME', 'admin');
+// Set a password
+define('PASSWORD', 'password');
+// Google analytics code (UA-XXXXXXXX-X)
+define('GOOGLE_ANALYTICS_CODE', '');
+
+// Path to apps docroot on disk
 define('BASE_PATH', __DIR__);
-// Path to docroot relative to webserver root
+// Path to docroot in URLs
 define('BASE_URL', rtrim($_SERVER['SCRIPT_NAME'], 'index.php'));
 // Path to theme folder relative to webserver root
-define('THEME_URL', BASE_URL . 'themes/puny/');
-// username 
-define('USERNAME', 'admin');
-// password
-define('PASSWORD', 'password');
-// Google analutics
-define('GOOGLE_ANALYTICS_CODE', 'UA-XXXXXXXX-X');
+define('THEME_URL', BASE_URL . 'themes/'.THEME_NAME.'/');
+// Path to the HTML templates
+define('TEMPLATE_PATH', BASE_PATH . '/themes/'.THEME_NAME.'/templates/');

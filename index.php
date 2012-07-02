@@ -8,7 +8,7 @@ session_cache_limiter(false);
 session_start();
 
 $app = new Slim(array(
-	'templates.path' => 'themes/puny/templates',
+	'templates.path' => TEMPLATE_PATH,
 ));
 
 $locked = function () use($app) {
