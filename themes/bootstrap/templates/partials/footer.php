@@ -38,7 +38,8 @@
     <script type="text/javascript">
       jQuery(document).ready(function($) {
         $('pre').addClass('prettyprint');
-        $('.banner').getTwitterFeed("stojg", 10, false);        
+        //$('.banner').getTwitterFeed("stojg", 10, false);
+        $('.banner').hide();      
         prettyPrint();
       });
     </script>
