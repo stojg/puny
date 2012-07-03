@@ -9,6 +9,10 @@ define('USERNAME', 'admin');
 define('PASSWORD', 'password');
 // Google analytics code (UA-XXXXXXXX-X)
 define('GOOGLE_ANALYTICS_CODE', '');
+// Gauges site id
+define('GAUGES_SITE_ID', '');
+// Are we running the site in dev mode?
+define('DEV_MODE', true);
 
 // Path to apps docroot on disk
 define('BASE_PATH', __DIR__);
