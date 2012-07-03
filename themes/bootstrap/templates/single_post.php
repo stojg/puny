@@ -8,7 +8,7 @@
 <div class="comments">
 	<div id="disqus_thread"></div>
 	<script type="text/javascript">
-	var disqus_developer = 1;
+	var disqus_developer = <?php echo (int)DEV_MODE; ?>;
 	var disqus_shortname = 'stojgse';
 	/* * * DON'T EDIT BELOW THIS LINE * * */
 	(function() {
