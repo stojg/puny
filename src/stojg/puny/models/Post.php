@@ -298,6 +298,8 @@ class Post {
 	protected function getFilename() {
 		$newFilename = date('Y-m-d', strtotime($this->date));
 		$newFilename.= '-'.preg_replace('/[^A-Za-z0-9]/', '-', $this->title);
+		$newFilename = preg_replace('/--+/', '-', $newFilename);
+		$newFilename = trim($newFilename, '-');
 		return  strtolower($newFilename).Post::extension();
 	}
 
