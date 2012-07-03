@@ -1,4 +1,7 @@
 <?php
+// Alias the namespace
+use \stojg\puny as s;
+
 // get the configuration
 require 'config.php';
 // Use composer autoloader
@@ -13,7 +16,7 @@ $app = new Slim(array(
 
 $locked = function () use($app) {
     return function () use ($app) {
-		$user = new \stojg\puny\models\User($app);
+		$user = new s\models\User($app);
 		if(!$user->valid()) {
 			$app->redirect($app->urlFor('login'));
 		}
@@ -24,7 +27,7 @@ $app->add(new \stojg\puny\helpers\ViewHelper());
 
 // Indexpage
 $app->get('/', function () use($app) {
-	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('home.php', array(
 		'posts' => $blog->getPosts(5),
 	));
@@ -32,7 +35,7 @@ $app->get('/', function () use($app) {
 
 // Single Post
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$post = $blog->getPost($url);
 	if(!$post->exists()) {
 		$app->notFound();
@@ -47,7 +50,7 @@ $app->get('/blog/:url', function ($url) use($app) {
 
 // Archives
 $app->get('/archives', function () use($app) {
-	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('archives.php', array(
 		'posts' => $blog->getPosts(),
 		'title' => 'Archives',
@@ -56,7 +59,7 @@ $app->get('/archives', function () use($app) {
 
 // Categories
 $app->get('/category/:name', function ($name) use($app) {
-	$blog = new \stojg\puny\Cached(new stojg\puny\models\Blog('posts/'));
+	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('category.php', array(
 		'category' => $name,
 		'posts' => $blog->getCategory($name),
@@ -67,7 +70,7 @@ $app->get('/category/:name', function ($name) use($app) {
 /** Admin functionality **/
 
 $app->get('/add', $locked(), function() use($app) {
-	$post = new stojg\puny\models\Post('posts/');
+	$post = new s\models\Post('posts/');
 	$app->render('edit.php', array(
 		'post' => $post,
 		'title' => 'New post'
@@ -76,7 +79,7 @@ $app->get('/add', $locked(), function() use($app) {
 
 $app->post('/add', $locked(), function() use($app) {
 	$req = $app->request();
-	$post = new stojg\puny\models\Post('posts/');
+	$post = new s\models\Post('posts/');
 	$post->setContent($req->post('content'))
 		->setTitle($req->post('title'))
 		->setDate($req->post('date'))
@@ -88,7 +91,7 @@ $app->post('/add', $locked(), function() use($app) {
 
 // Single post Edit
 $app->get('/edit/:url', $locked(), function ($url) use($app) {
-	$blog = new stojg\puny\models\Blog('posts/');
+	$blog = new s\models\Blog('posts/');
 	$app->render('edit.php', array(
 		'post' => $blog->getPost($url, false)
 	));
@@ -97,7 +100,7 @@ $app->get('/edit/:url', $locked(), function ($url) use($app) {
 // Single post Edit
 $app->post('/edit/:url', $locked(), function ($url) use($app) {
 	$req = $app->request();
-	$blog = new stojg\puny\models\Blog('posts/');
+	$blog = new s\models\Blog('posts/');
 	$post = $blog->getPost($url, false);
 	$post->setContent($req->post('content'))
 		->setTitle($req->post('title'))
@@ -115,7 +118,7 @@ $app->get('/login/', function() use($app) {
 
 // Login action
 $app->post('/login/', function() use($app) {
-	$user = new \stojg\puny\models\User();
+	$user = new s\models\User();
 	if(!$user->login($app)) {
 		$app->flash('error', 'Login failed, try again!');
 		$app->redirect($app->urlFor('login'));
@@ -125,7 +128,7 @@ $app->post('/login/', function() use($app) {
 
 // Logout
 $app->get('/logout', function() use($app) {
-	$user = new stojg\puny\models\User();
+	$user = new s\models\User();
 	$user->logout();
 	$app->redirect($app->request()->getRootUri());
 })->name('logout');
