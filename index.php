@@ -7,13 +7,41 @@ require 'config.php';
 // Use composer autoloader
 require 'vendor/autoload.php';
 
+/**
+ * General @todo
+ *
+ * Add more 404's in the category and archive routes
+ * Implement proper application logging
+ */
+
+/**
+ * Startup the session
+ *
+ * @todo see if this be skipped so non admin don't have to get 
+ * a session
+ */
 session_cache_limiter(false);
 session_start();
 
+/**
+ * Get a new shiny Slim application
+ * 
+ * @var Slim
+ */
 $app = new Slim(array(
 	'templates.path' => TEMPLATE_PATH,
 ));
 
+/**
+ * Add a middleware to all routes.
+ * It will add commonly accessed variables to the templates
+ */
+$app->add(new s\helpers\ViewHelper());
+
+/** 
+ * This function can be used as middleware to lock 
+ * certain routes.
+ */
 $locked = function () use($app) {
     return function () use ($app) {
 		$user = new s\models\User($app);
@@ -23,9 +51,9 @@ $locked = function () use($app) {
     };
 };
 
-$app->add(new \stojg\puny\helpers\ViewHelper());
-
-// Indexpage
+/**
+ * This is the index page
+ */
 $app->get('/', function () use($app) {
 	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('home.php', array(
@@ -33,7 +61,10 @@ $app->get('/', function () use($app) {
 	));
 })->name('index');
 
-// Single Post
+/**
+ * Route for a single post
+ * 
+ */
 $app->get('/blog/:url', function ($url) use($app) {
 	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$post = $blog->getPost($url);
@@ -48,7 +79,9 @@ $app->get('/blog/:url', function ($url) use($app) {
 	));
 })->name('single_post');
 
-// Archives
+/**
+ * A list of all the posts that has been made
+ */
 $app->get('/archives', function () use($app) {
 	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('archives.php', array(
@@ -57,7 +90,9 @@ $app->get('/archives', function () use($app) {
 	));
 })->name('archives');
 
-// Categories
+/**
+ * Show all posts tagged with a category
+ */
 $app->get('/category/:name', function ($name) use($app) {
 	$blog = new s\Cached(new s\models\Blog('posts/'));
 	$app->render('category.php', array(
@@ -67,8 +102,9 @@ $app->get('/category/:name', function ($name) use($app) {
 	));
 })->name('category');
 
-/** Admin functionality **/
-
+/** 
+ * Display a form for adding a new post
+ */
 $app->get('/add', $locked(), function() use($app) {
 	$post = new s\models\Post('posts/');
 	$app->render('edit.php', array(
@@ -77,6 +113,10 @@ $app->get('/add', $locked(), function() use($app) {
 	));
 })->name('add');
 
+/**
+ * Add a new post to the datastore
+ * @todo Move the set and save out of the route 
+ */
 $app->post('/add', $locked(), function() use($app) {
 	$req = $app->request();
 	$post = new s\models\Post('posts/');
@@ -89,7 +129,9 @@ $app->post('/add', $locked(), function() use($app) {
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
-// Single post Edit
+/**
+ * Display the form for editing a post
+ */
 $app->get('/edit/:url', $locked(), function ($url) use($app) {
 	$blog = new s\models\Blog('posts/');
 	$app->render('edit.php', array(
@@ -97,7 +139,10 @@ $app->get('/edit/:url', $locked(), function ($url) use($app) {
 	));
 })->name('edit');
 
-// Single post Edit
+/**
+ * Save a currently edited post
+ * @todo Move the set and save out of the route
+ */
 $app->post('/edit/:url', $locked(), function ($url) use($app) {
 	$req = $app->request();
 	$blog = new s\models\Blog('posts/');
@@ -111,30 +156,46 @@ $app->post('/edit/:url', $locked(), function ($url) use($app) {
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
-// Login
+/**
+ * Display the login form
+ */
 $app->get('/login/', function() use($app) {
 	$app->render('login.php');
 })->name('login');
 
-// Login action
+/**
+ * Check the login information
+ * 
+ * @todo move the login method out of the User model
+ */
 $app->post('/login/', function() use($app) {
 	$user = new s\models\User();
 	if(!$user->login($app)) {
-		$app->flash('error', 'Login failed, try again!');
+		$app->flash('error', 'Login failed!');
 		$app->redirect($app->urlFor('login'));
 	}
 	$app->redirect($app->urlFor('index'));
 });
 
-// Logout
+/**
+ * Logout the user
+ *
+ * @todo move the logout method out of the User model
+ */
 $app->get('/logout', function() use($app) {
 	$user = new s\models\User();
 	$user->logout();
 	$app->redirect($app->request()->getRootUri());
 })->name('logout');
 
+/**
+ * The 404 not found route
+ */
 $app->notFound(function () use ($app) {
     $app->render('404.php');
 });
 
+/**
+ * Finally, run the app!
+ */
 $app->run();
