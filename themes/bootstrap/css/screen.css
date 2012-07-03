@@ -26,6 +26,58 @@ body {
 
 @media (min-width: 979px) { 
 	body {
-    	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    	padding-top: 80px;
 	}
+}
+
+@media (max-width: 640px) { 
+	.navbar-search {
+		display: none;
+	}
+}
+
+.banner {
+	position: absolute;
+	top: 43px;
+	left: 0;
+	right: 0;
+	background: #2c2c2c;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+
+@media (max-width: 980px) {
+  .banner {
+	top: 50px;
+  }
+}
+
+.banner .inner {
+	height: 20px;
+	overflow: hidden;
+	position: relative;
+}
+
+.feed {
+	position: absolute;
+	font: 10px "Droid Sans Mono";
+	color: #666;
+	width: 100%;
+	display: block;
+}
+
+.inner ul,
+.inner li {
+	list-style: none;
+	margin:0;
+	padding: 0;
+}
+
+.inner li {
+	padding: 0 10px;
+}
+
+.inner li small {
+	display: block;
+	float: right;
 }

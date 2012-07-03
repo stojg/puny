@@ -30,22 +30,41 @@
       <div class="container">
         <a class="brand" href="<?php echo $app->urlFor('index'); ?>">Stig's journal</a>
         <ul class="nav">
-            <li class="active"><a href="<?php echo $app->urlFor('index'); ?>">Home</a></li>
-            <li><a href="<?php echo $app->urlFor('archives'); ?>">Archives</a></li>
-          </ul>
-          <form class="navbar-search pull-right" action="http://google.com/search" method="get">
-            <input type="text" class="search-query" placeholder="Search" name="q" results="0">
-            <input type="hidden" name="q" value="site:stojg.se/">
-          </form>
+            <li class="active">
+              <a href="<?php echo $app->urlFor('index'); ?>">Home</a>
+            </li>
+            <li>
+              <a href="<?php echo $app->urlFor('archives'); ?>">Archives</a>
+            </li>
+            <?php if($user->valid()) { ?>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Admin
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit Page</a></li>
+                <li><a href="<?php echo $app->urlFor('add'); ?>">Add Page</a></li>
+                <li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
+              </ul>
+            <?php } else { ?>
+              <li>
+                <a href="<?php echo $app->urlFor('login'); ?>">Sign in</a>
+            </li>
+            <?php } ?>
+          </li>
+        </ul>
+        <form class="navbar-search pull-right" action="http://google.com/search" method="get">
+          <input type="text" class="search-query" placeholder="Search" name="q" results="0">
+          <input type="hidden" name="q" value="site:stojg.se/">
+        </form>
       </div>
     </div>
   </div>
-
-  <div class="banner inner">
-      <div class="container">
-        <ul class="feed"></ul>
-      </div>
-      <div class="loading">Loading...</div>
+  <div class="banner">
+    <div class="inner">
+      <ul class="feed"></ul>
     </div>
+  </div>
 
   <div class="container">

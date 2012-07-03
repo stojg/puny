@@ -1,11 +1,8 @@
  </div> <!-- /container -->
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
     <script src="<?php echo THEME_URL;?>/js/jquery.js"></script>
     <script src="<?php echo THEME_URL;?>/js/bootstrap.min.js"></script>
-    <script src="<?php echo THEME_URL;?>/js/twitter.js"></script>
+    <script src="<?php echo THEME_URL;?>/js/site.js"></script>
     <script type="text/javascript" src="<?php echo THEME_URL;?>/js/prettify/prettify.js"></script>
     <?php if(defined('GOOGLE_ANALYTICS_CODE') && GOOGLE_ANALYTICS_CODE) { ?>
     <script type="text/javascript">
@@ -32,16 +29,6 @@
           var s = document.getElementsByTagName('script')[0];
           s.parentNode.insertBefore(t, s);
         })();
-    </script>
-  
-    
-    <script type="text/javascript">
-      jQuery(document).ready(function($) {
-        $('pre').addClass('prettyprint');
-        //$('.banner').getTwitterFeed("stojg", 10, false);
-        $('.banner').hide();      
-        prettyPrint();
-      });
     </script>
   </body>
 </html>

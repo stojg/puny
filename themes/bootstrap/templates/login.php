@@ -1,34 +1,31 @@
 <?php require 'partials/header.php'; ?>
 <div class="row">
-    <div class="span10 offset2">
+    <div class="span4 offset4">
     	
-		<form class="well form-horizontal" method="post">
-			<fieldset>
-				<legend>Login form</legend>
-			<input type="hidden" name="action" value="login" />
-			<?php if(isset($flash) && $flash) { ?>
-			<div class="flashmessage">
-				<?php foreach($flash->getMessages() as $type => $message) { ?>
-					<div class="<?php echo $type; ?>"><?php echo $message; ?></div>
-				<?php } ?>
-			</div>
+    	<?php foreach($flash->getMessages() as $type => $message) { ?>
+				<div class="alert alert-<?php echo $type; ?>">
+				 	<button class="close" data-dismiss="alert">×</button>
+				 	<b><?php echo ucfirst($type); ?></b> - <?php echo $message; ?>
+				</div>
 			<?php } ?>
-			<div class="control-group">
-				<label class="control-label" for="username">Username</label>
+		<form method="post">
+			
+			<input type="hidden" name="action" value="login" />
+			
+			<div class="control-group">	
 				<div class="controls">
-					<input type="text" class="input" placeholder="Username" id="username" name="username">
+					<input type="text" class="input span4" placeholder="Username" id="username" name="username">
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="password">Password</label>
 				<div class="controls">
-					<input type="password" class="input" placeholder="Password" name="password">
+					<input type="password" class="input span4" placeholder="Password" name="password">
 				</div>
 			</div>
 			<div class="control-group">
-				<input type="submit" class="btn btn-primary" value="Sign in">
+				<input type="submit" class="btn pull-right" value="Sign in">
 			</div>
-		</fieldset>
+		
 		</form>
 	</div>
 </div>
