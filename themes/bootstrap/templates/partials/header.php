@@ -45,6 +45,7 @@
               <ul class="dropdown-menu">
                 <li><a href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit Page</a></li>
                 <li><a href="<?php echo $app->urlFor('add'); ?>">Add Page</a></li>
+                <li class="divider"></li>
                 <li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
               </ul>
             <?php } else { ?>
