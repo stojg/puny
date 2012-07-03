@@ -1,6 +1,4 @@
 $(document).ready(function($) {
-	$('pre').addClass('prettyprint');
-	//$('.banner').hide();
 	$('textarea').autosize();
 	$('.banner').getTwitterFeed("stojg", 10, false);
 	prettyPrint();
@@ -8,8 +6,6 @@ $(document).ready(function($) {
 
 (function($){
 	$.fn.getTwitterFeed = function(userid, count, reply){
-
-
 		var banner = $(this),
 			feed = banner.find('.feed'),
 			interval = 10000,
