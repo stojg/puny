@@ -4,6 +4,14 @@
     <script src="<?php echo THEME_URL; ?>js/site.js"></script>
     <?php require TEMPLATE_PATH.'partials/google-analytics.php'; ?>
     <?php require TEMPLATE_PATH.'partials/gauges-analytics.php'; ?>
-    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    <!-- Place this render call where appropriate -->
+	<script type="text/javascript">
+		(function() {
+			var po = document.createElement('script');
+			po.type = 'text/javascript'; po.async = true;
+			po.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	  })();
+	</script>
   </body>
 </html>

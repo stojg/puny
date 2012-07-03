@@ -22,9 +22,12 @@
         <div>
           <?php echo $post->getContentHTML(); ?>
         </div>
-          <div class="g-plusone" data-size="small" data-width="198" data-annotation="inline" data-href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>"></div>
+        <div class="pull-right u1">
+          <g:plusone size="small" data-href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>"></g:plusone>
+        </div>
+        <div class="clearfix"></div>
       </article>
-      <hr />
+      <hr  />
     </div>
 
   </div>

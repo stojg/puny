@@ -21,7 +21,7 @@ body {
 	font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-weight: 300;
 	font-size: 15px;
-	line-height: 24px;
+	line-height: 23px;
 }
 
 @media (min-width: 979px) { 
@@ -80,4 +80,14 @@ body {
 .inner li small {
 	display: block;
 	float: right;
+}
+
+.u1 {
+	display: block;
+	height: 23px;
+}
+
+.u2 {
+	display: block;
+	height: 46px;
 }
