@@ -31,7 +31,12 @@ $app = new Slim(array(
  */
 $app->add(new s\helpers\ViewHelper());
 
-
+/**
+ * Checks if the current user is an admin
+ * 
+ * @param  Slim  $app
+ * @return boolean
+ */
 function isAdmin($app) {
 	static $user = null;
 	if($user === null) {
@@ -40,12 +45,18 @@ function isAdmin($app) {
 	return $user = $user->valid();
 }
 
-function getPosts(Slim $app) {
+/**
+ * 
+ * @param  Slim   $app [description]
+ * @param  int    $limit [description]
+ * @return array
+ */
+function getPosts(Slim $app, $limit=false) {
 	$blog = new s\models\Blog('posts/');
 	if(isAdmin($app)) {
-		return $blog->getAllPosts(5);
+		return $blog->getAllPosts($limit);
 	}
-	return $blog->getPosts(5);
+	return $blog->getPosts($limit);
 }
 
 /** 
@@ -79,7 +90,7 @@ $savePost = function(Slim_Http_Request $request, s\models\Post $post) {
  * This is the index page
  */
 $app->get('/', function () use($app) {
-	$posts = getPosts($app);
+	$posts = getPosts($app, 5);
 	$app->render('home.php', array('posts' => $posts));
 })->name('index');
 
