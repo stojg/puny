@@ -8,13 +8,6 @@ require 'config.php';
 require 'vendor/autoload.php';
 
 /**
- * General @todo
- *
- * Add more 404's in the category and archive routes
- * Implement proper application logging
- */
-
-/**
  * Startup the session
  *
  * @todo see if this be skipped so non admin don't have to get 
