@@ -1,7 +1,7 @@
 <?php
 namespace stojg\puny\models;
-
 /**
+ * Represents a user of the site, logged in or not doesn't matter.
  *
  */
 class User {
@@ -28,8 +28,9 @@ class User {
 	}
 
 	/**
+	 * Get the password the users password
 	 *
-	 * @return string|boolean
+	 * @return string|boolean - returns false if no password has been entered
 	 */
 	public function getPassword() {
 		if(!isset($_SESSION['password'])) {
