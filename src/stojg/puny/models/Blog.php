@@ -63,16 +63,29 @@ class Blog {
 	 * @return array|\Stojg\Puny\Post
 	 */
 	public function getPosts($limit=false) {
+		return $this->filterPosts($limit, function(Post $post) {
+			return !$post->draft();
+		});
+	}
+
+	public function getAllPosts($limit=false) {
+		return $this->filterPosts($limit);
+	}
+
+	protected function filterPosts($limit, $filter = null) {
 		$posts = array();
 		$i = 0;
 		foreach($this->files as $filename) {
 			if($limit && $i>=$limit) {
 				return $posts;
 			}
-			$posts[] = new \stojg\puny\Cached(new Post($filename));
-			$i++;
+			$post = new Post($filename);
+			if(!is_callable($filter) || $filter($post)) {
+				$posts[] = new \stojg\puny\Cached($post);
+				$i++;	
+			}
 		}
-		return $posts;
+		return $posts;	
 	}
 
 	/**
@@ -81,14 +94,16 @@ class Blog {
 	 * @param string $categoryName
 	 * @return array
 	 */
-	public function getCategory($categoryName) {
-		$posts = array();
-		foreach($this->files as $filename) {
-			$post = new \stojg\puny\Cached(new Post($filename));
-			if(in_array($categoryName, $post->getCategories())) {
-				$posts[] = $post;
+	public function getCategory($categoryName, $limit = null, $viewDrafts=false) {
+		return $this->filterPosts($limit, function(Post $post) use($categoryName, $viewDrafts) {
+			if(!in_array($categoryName, $post->getCategories())) {
+				return false;
 			}
-		}
+			if(!$viewDrafts && $post->viewDrafts()) {
+				return false;
+			}
+			return true;
+		});
 		return $posts;
 	}
 

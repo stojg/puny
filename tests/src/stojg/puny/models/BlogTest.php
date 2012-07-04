@@ -31,6 +31,15 @@ class BlogTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @covers stojg\puny\models\Blog::getPosts
+	 */
+	public function testGetAllPosts() {
+		$this->assertEquals(7, count($this->object->getAllPosts()));
+		$this->assertEquals(7, count($this->object->getAllPosts(10)));
+		$this->assertEquals(5, count($this->object->getAllPosts(5)));
+	}
+
+	/**
 	 *
 	 */
 	public function testGetPostsIsSorted() {

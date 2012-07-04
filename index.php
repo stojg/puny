@@ -38,14 +38,30 @@ $app = new Slim(array(
  */
 $app->add(new s\helpers\ViewHelper());
 
+
+function isAdmin($app) {
+	static $user = null;
+	if($user === null) {
+		$user = new s\models\User($app);
+	}
+	return $user = $user->valid();
+}
+
+function getPosts(Slim $app) {
+	$blog = new s\models\Blog('posts/');
+	if(isAdmin($app)) {
+		return $blog->getAllPosts(5);
+	}
+	return $blog->getPosts(5);
+}
+
 /** 
  * This function can be used as middleware to lock 
  * certain routes.
  */
 $locked = function () use($app) {
     return function () use ($app) {
-		$user = new s\models\User($app);
-		if(!$user->valid()) {
+		if(!isAdmin($app)) {
 			$app->redirect($app->urlFor('login'));
 		}
     };
@@ -62,6 +78,7 @@ $savePost = function(Slim_Http_Request $request, s\models\Post $post) {
 		->setTitle($request->post('title'))
 		->setDate($request->post('date'))
 		->setCategories($request->post('categories'))
+		->setDraft($request->post('draft'))
 		->save('posts');
 } ;
 
@@ -69,10 +86,8 @@ $savePost = function(Slim_Http_Request $request, s\models\Post $post) {
  * This is the index page
  */
 $app->get('/', function () use($app) {
-	$blog = new s\Cached(new s\models\Blog('posts/'));
-	$app->render('home.php', array(
-		'posts' => $blog->getPosts(5),
-	));
+	$posts = getPosts($app);
+	$app->render('home.php', array('posts' => $posts));
 })->name('index');
 
 /**
@@ -80,7 +95,7 @@ $app->get('/', function () use($app) {
  * 
  */
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new s\Cached(new s\models\Blog('posts/'));
+	$blog = new s\models\Blog('posts/');
 	$post = $blog->getPost($url);
 	if(!$post->exists()) {
 		$app->notFound();
@@ -95,10 +110,10 @@ $app->get('/blog/:url', function ($url) use($app) {
 /**
  * A list of all the posts that has been made
  */
-$app->get('/archives', function () use($app) {
-	$blog = new s\Cached(new s\models\Blog('posts/'));
+$app->get('/archives', function () use($app) {	
+	$posts = getPosts($app);
 	$app->render('archives.php', array(
-		'posts' => $blog->getPosts(),
+		'posts' => $posts,
 		'title' => 'Archives',
 	));
 })->name('archives');
@@ -107,10 +122,10 @@ $app->get('/archives', function () use($app) {
  * Show all posts tagged with a category
  */
 $app->get('/category/:name', function ($name) use($app) {
-	$blog = new s\Cached(new s\models\Blog('posts/'));
+	$blog = new s\models\Blog('posts/');
 	$app->render('category.php', array(
 		'category' => $name,
-		'posts' => $blog->getCategory($name),
+		'posts' => $blog->getCategory($name, null, isAdmin($app)),
 		'title' => $name,
 	));
 })->name('category');

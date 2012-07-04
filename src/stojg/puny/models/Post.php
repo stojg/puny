@@ -59,6 +59,12 @@ class Post {
 	private $filename = '';
 
 	/**
+	 * If this is true, to post is a draft
+	 * @var bool
+	 */
+	private $draft = false;
+
+	/**
 	 * This marks the content within two of these signs on a single line as meta
 	 * data
 	 *
@@ -228,14 +234,36 @@ class Post {
 
 		foreach ($word_array as $length=>$word) {
     		$text.=$word ;
-    		if($length==$maxWords
-    ) {
+    		if($length==$maxWords) {
     			break;
     		} else {
     			$text.=" ";
     		}
 		}
 		return $text;
+	}
+
+	/**
+	 * Returns true if this post is a draft 
+	 * 
+	 * @return bool 
+	 */
+	public function draft() {
+		$this->load();
+		// It's so weird that it actually works
+		// (bool)"true" === true
+		return (bool)$this->draft;
+	}
+
+	/**
+	 * 
+	 * @param bool $draft
+	 * @return Post
+	 */
+	public function setDraft($draft) {
+		$this->draft = $draft;
+		$this->updateRawContent();
+		return $this;
 	}
 
 	/**
@@ -285,6 +313,9 @@ class Post {
 		$content.= 'title: "'.$this->title.'"'.PHP_EOL;
 		$content.= 'date: '.$this->date.PHP_EOL;
 		$content.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
+		if($this->draft()) {
+			$content.='draft: true';
+		}
 		$content.= '---'.PHP_EOL;
 		$content.= $this->content;
 		$this->rawContent = $content;

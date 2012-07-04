@@ -36,6 +36,24 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="control-group">
+					<div class="controls">
+						<div class="controls">
+							<label class="radio">
+								<input type="radio" name="draft" id="draftFalse" value="0" <?php echo ($post->draft())?'':'checked="checked"'; ?>>
+								This post is published
+							</label>
+							<label class="radio">
+								<input type="radio" name="draft" id="draftTrue" value="1" <?php echo (!$post->draft())?'':'checked="checked"'; ?>>
+								This post is hidden
+								</label>
+							</div>
+					</div>
+				</div>
+
+
+				
 				<div class="control-group">
 					<div class="controls">
 						<div class="input-prepend">

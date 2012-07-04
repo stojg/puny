@@ -5,7 +5,7 @@
     <title><?php if(isset($title)){echo $title.' - ';}?>Stig's Journal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
-    if(isset($posts)) { $post = $posts[0]; }
+    if(isset($posts) && is_array($posts) && count($posts)) { $post = $posts[0]; }
     if(isset($post)) {
     ?>
     <meta name="description" content="<?php echo $post->getDescription();?>">

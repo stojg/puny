@@ -125,4 +125,13 @@ Usually it's three europeans and one kiwi, but tonight we're getting some help f
 		$newPost->setTitle('change-url');
 		$newPost->save('/tmp/');
 	}
+
+	public function testDraft() {
+		$post = new Post('tests/src/stojg/puny/models/fixtures/2012-07-09-draft-post.md');
+		$this->assertTrue($post->draft());
+		$post->setDraft(false);
+		$this->assertFalse($post->draft());
+		$post->setDraft(true);
+		$this->assertTrue($post->draft());
+	}
 }

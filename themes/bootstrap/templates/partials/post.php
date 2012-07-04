@@ -4,7 +4,7 @@
         <header>
           <h1>
             <a href="<?php echo $app->urlFor('single_post', array('url'=>$post->basename())); ?>">
-              <?php echo $post->getTitle(); ?>
+              <?php if($post->draft()) { echo '[draft] ';} echo $post->getTitle(); ?>
             </a>
           </h1>
           <p>
