@@ -52,6 +52,20 @@ $locked = function () use($app) {
 };
 
 /**
+ * savePost saves / creates a post
+ * 
+ * @param Slim_Http_Request $request
+ * @param \stojg\puny\models\Post $post
+ */
+$savePost = function(Slim_Http_Request $request, s\models\Post $post) {
+	$post->setContent($request->post('content'))
+		->setTitle($request->post('title'))
+		->setDate($request->post('date'))
+		->setCategories($request->post('categories'))
+		->save('posts');
+} ;
+
+/**
  * This is the index page
  */
 $app->get('/', function () use($app) {
@@ -72,7 +86,6 @@ $app->get('/blog/:url', function ($url) use($app) {
 		$app->notFound();
 		return;
 	};
-	
 	$app->render('single_post.php', array(
 		'post' => $post,
 		'title' => $post->getTitle(),
@@ -115,49 +128,41 @@ $app->get('/add', $locked(), function() use($app) {
 
 /**
  * Add a new post to the datastore
- * @todo Move the set and save out of the route 
+  *
  */
-$app->post('/add', $locked(), function() use($app) {
+$app->post('/add', $locked(), function() use($app, $savePost) {
 	$req = $app->request();
 	$post = new s\models\Post('posts/');
-	$post->setContent($req->post('content'))
-		->setTitle($req->post('title'))
-		->setDate($req->post('date'))
-		->setCategories($req->post('categories'))
-		->save('posts');
+	$savePost($app->request(), $post);
 	$app->flash('info', 'You just create a new post.');
-	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
+	$app->redirect($app->urlFor('edit', array('url' => $post->basename())));
 });
 
 /**
  * Display the form for editing a post
+ * 
  */
 $app->get('/edit/:url', $locked(), function ($url) use($app) {
 	$blog = new s\models\Blog('posts/');
-	$app->render('edit.php', array(
-		'post' => $blog->getPost($url, false)
-	));
+	$app->render('edit.php', array('post' => $blog->getPost($url, false)));
 })->name('edit');
 
 /**
  * Save a currently edited post
- * @todo Move the set and save out of the route
+ * 
  */
-$app->post('/edit/:url', $locked(), function ($url) use($app) {
+$app->post('/edit/:url', $locked(), function ($url) use($app, $savePost) {
 	$req = $app->request();
 	$blog = new s\models\Blog('posts/');
 	$post = $blog->getPost($url, false);
-	$post->setContent($req->post('content'))
-		->setTitle($req->post('title'))
-		->setDate($req->post('date'))
-		->setCategories($req->post('categories'))
-		->save('posts');
+	$savePost($app->request(), $post);
 	$app->flash('info', 'Post have been saved');
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
 /**
  * Display the login form
+ * 
  */
 $app->get('/login/', function() use($app) {
 	$app->render('login.php');
@@ -189,7 +194,8 @@ $app->get('/logout', function() use($app) {
 })->name('logout');
 
 /**
- * The 404 not found route
+ * The 404 - Not found route
+ * 
  */
 $app->notFound(function () use ($app) {
     $app->render('404.php');
