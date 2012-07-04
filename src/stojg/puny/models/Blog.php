@@ -99,7 +99,7 @@ class Blog {
 			if(!in_array($categoryName, $post->getCategories())) {
 				return false;
 			}
-			if(!$viewDrafts && $post->viewDrafts()) {
+			if(!$viewDrafts && $post->draft()) {
 				return false;
 			}
 			return true;
