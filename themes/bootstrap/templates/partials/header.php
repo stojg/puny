@@ -14,7 +14,6 @@
 
     <!-- Le styles -->
     <link href="<?php echo THEME_URL;?>/css/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo THEME_URL;?>/js/prettify/prettify.css" type="text/css" rel="stylesheet" />
     <link href="<?php echo THEME_URL;?>/css/screen.css" rel="stylesheet">
     
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
