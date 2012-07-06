@@ -31,6 +31,26 @@ $app = new Slim(array(
  */
 $app->add(new s\helpers\ViewHelper());
 
+setupSession(7200);
+
+/**
+ * Start a session with a specific timeout
+ *
+ * @param  int $seconds - the time out in seconds
+ * @return void
+ */
+function setupSession($timeout=1800) {
+	ini_set("session.gc_maxlifetime", $timeout); 
+	if(isset($_SESSION['lastSeen']) ) {
+		$heartbeatAgo = time() - $_SESSION['lastSeen'];
+		$timeLeft = $timeout-$heartbeatAgo;
+		if($timeLeft<0) {
+			$_SESSION = array();
+		}
+	}
+	$_SESSION['lastSeen'] = time();
+}
+
 /**
  * Checks if the current user is an admin
  * 
