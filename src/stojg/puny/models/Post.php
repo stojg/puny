@@ -248,7 +248,7 @@ class Post {
 	 * 
 	 * @return bool 
 	 */
-	public function draft() {
+	public function getDraft() {
 		$this->load();
 		// It's so weird that it actually works
 		// (bool)"true" === true
@@ -309,16 +309,18 @@ class Post {
 	 * 
 	 */
 	protected function updateRawContent() {
-		$content = "---".PHP_EOL;
-		$content.= 'title: "'.$this->title.'"'.PHP_EOL;
-		$content.= 'date: '.$this->date.PHP_EOL;
-		$content.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
-		if($this->draft()) {
-			$content.='draft: true';
+		
+		$this->rawContent = "---".PHP_EOL;
+		$this->rawContent.= 'title: "'.$this->title.'"'.PHP_EOL;
+		$this->rawContent.= 'date: '.$this->date.PHP_EOL;
+		$this->rawContent.= 'categories: ['.implode(',',$this->categories).']'.PHP_EOL;
+		if($this->draft) {
+			$this->rawContent.='draft: true';
 		}
-		$content.= '---'.PHP_EOL;
-		$content.= $this->content;
-		$this->rawContent = $content;
+
+		$this->rawContent.= '---'.PHP_EOL;
+
+		$this->rawContent.= $this->content;
 	}
 
 	/**
@@ -389,7 +391,7 @@ class Post {
 	 * Get the contents from the file in a lock safe way
 	 *
 	 * @param string $filename
-	 * @return boolean
+	 * @return stroing|boolean
 	 */
 	protected function fileGetContents($filename) {
 		if(!file_exists($filename)) {
@@ -402,7 +404,12 @@ class Post {
 
 		$fh = fopen($filename, 'r');
 		flock($fh, LOCK_SH);
-		$content=fread ($fh, filesize($filename));
+		$fileSize = filesize($filename);
+		if(!$fileSize) {
+			return false;
+		}
+
+		$content = fread($fh, $fileSize);
 		flock($fh, LOCK_UN);
 		fclose($fh);
 		return trim($content);

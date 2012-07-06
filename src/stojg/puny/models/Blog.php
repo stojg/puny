@@ -64,7 +64,7 @@ class Blog {
 	 */
 	public function getPosts($limit=false) {
 		return $this->filterPosts($limit, function(Post $post) {
-			return !$post->draft();
+			return !$post->getDraft();
 		});
 	}
 
@@ -99,7 +99,7 @@ class Blog {
 			if(!in_array($categoryName, $post->getCategories())) {
 				return false;
 			}
-			if(!$viewDrafts && $post->draft()) {
+			if(!$viewDrafts && $post->getDraft()) {
 				return false;
 			}
 			return true;

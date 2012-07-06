@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
     if(isset($posts) && is_array($posts) && count($posts)) { $post = $posts[0]; }
-    if(isset($post)) {
+    if(isset($post) && $post->getDescription()) {
     ?>
     <meta name="description" content="<?php echo $post->getDescription();?>">
     <?php } ?>
