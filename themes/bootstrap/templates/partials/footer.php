@@ -12,6 +12,9 @@
 			po.src = 'https://apis.google.com/js/plusone.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 	  })();
+
 	</script>
+	<script src="http://yandex.st/highlightjs/7.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

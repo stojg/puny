@@ -15,6 +15,7 @@
     <!-- Le styles -->
     <link href="<?php echo THEME_URL;?>/css/bootstrap.css" rel="stylesheet">
     <link href="<?php echo THEME_URL;?>/css/screen.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/7.0/styles/default.min.css">
     
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
