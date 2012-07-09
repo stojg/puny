@@ -48,4 +48,33 @@ class PageListTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('true', $page->comments());
 		$this->assertEquals(1054, strlen($page->content()));
 	}
+
+	public function testGetPage(){
+		$pages = $this->object->itemsPerPage(2)->page(1);
+		
+		$this->assertEquals(2, count($pages));
+		$this->assertEquals('The three musketeers', $pages[0]->title());
+		$this->assertEquals('How to setup up Octopress', $pages[1]->title());
+		
+		$pages = $this->object->itemsPerPage(3)->page(2);
+		$this->assertEquals(3, count($pages));
+		$this->assertEquals('movie night', $pages[0]->title());
+		$this->assertEquals('Quiz results', $pages[1]->title());
+		$this->assertEquals('Quiz night', $pages[2]->title());
+	}
+
+	public function testGet() {
+		$pages = $this->object->get();
+		$this->assertEquals(6, count($pages));
+		$this->assertEquals('movie night', $pages[0]->title());
+		$this->assertEquals('How to setup up Octopress', $pages[6]->title());
+	}
+
+	public function testGetDraft() {
+		$pages = $this->object->get(true);
+		$this->assertEquals(7, count($pages));
+		$this->assertEquals('draft-post', $pages[0]->title());
+		$this->assertEquals('How to setup up Octopress', $pages[6]->title());
+	}
+
 }

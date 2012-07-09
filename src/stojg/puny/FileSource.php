@@ -1,50 +1,123 @@
 <?php
 namespace stojg\puny;
 
+/**
+ * FileSource stores and fetches pages from the file system
+ */
 class FileSource implements DataSource {
-	
+
+	/**
+	 * What divides the the meta data from the actually content in the files
+	 *
+	 * @var string
+	 */
 	protected $metaDivider = '---';
 
+	/**
+	 * In which directory are the pages saved
+	 *
+	 * @var string
+	 */
 	protected $directory = null;
 
+	/**
+	 *
+	 * @var array
+	 */
 	protected $items = array();
 
+	/**
+	 *
+	 * @var int
+	 */
 	protected $limit = null;
 
+	/**
+	 *
+	 * @var int
+	 */
 	protected $offset = 0;
 
+	/**
+	 * If we should include draft posts in the list
+	 *
+	 * @var boolean
+	 */
+	protected $draft = false;
+
+	/**
+	 *
+	 * @param string $sourceDir - where the pages are saved on disk
+	 */
 	public function __construct($sourceDir) {
-		$this->directory = str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR, '', $sourceDir);
+		$this->directory = str_replace('//', '', $sourceDir);
 	}
 
-	public function dataSource() {
-		return $this->directory;
-	}
-
+	/**
+	 *
+	 * @return int
+	 */
 	public function count() {
 		$this->finalize();
 		return count($this->items);
 	}
 
+	/**
+	 *
+	 * @return string - json of the first files in the list
+	 */
 	public function first() {
 		$this->finalize();
 		reset($this->items);
 		$fileName = current($this->items);
 		return $this->loadFile($fileName);
-		
 	}
 
-	/** Setters **/
+	/**
+	 *
+	 * @return array - an array of json strings
+	 */
+	public function toArray() {
+		$this->finalize();
+		$pages = array();
+		foreach($this->items as $item) {
+			$pages[] = $this->loadFile($item);
+		}
+		return $pages;
+	}
+
+	/**
+	 *
+	 * @param int $limit
+	 * @return \stojg\puny\FileSource
+	 */
 	public function limit($limit) {
 		$this->limit = (int) $limit;
 		return $this;
 	}
 
+	/**
+	 *
+	 * @param int $offset
+	 * @return \stojg\puny\FileSource
+	 */
 	public function offset($offset) {
 		$this->offset = (int) $offset;
 		return $this;
 	}
 
+	/**
+	 * If set to true will return the drafts as well
+	 *
+	 * @param boolean $show
+	 */
+	public function draft($show) {
+		$this->draft = $show;
+	}
+
+	/**
+	 * Finalize the 'query' and set the internal $items to the resulting pages
+	 */
 	protected function finalize() {
 		$items = glob($this->directory . DIRECTORY_SEPARATOR .'*' );
 

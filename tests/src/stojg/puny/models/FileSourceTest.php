@@ -18,10 +18,6 @@ class FileSourceTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->obj instanceof DataSource);
 	}
 
-	public function testGetDataSource() {
-		$this->assertEquals('tests/src/stojg/puny/models/fixtures/', $this->obj->dataSource());
-	}
-
 	public function testCount() {
 		$this->assertEquals(7, $this->obj->count());
 	}

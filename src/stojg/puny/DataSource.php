@@ -2,9 +2,10 @@
 
 namespace stojg\puny;
 
+/**
+ * DataSource interface that acts as a DataMapper
+ */
 interface DataSource {
-
-	public function dataSource();
 
 	public function count();
 
