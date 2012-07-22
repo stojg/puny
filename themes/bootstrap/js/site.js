@@ -1,7 +1,6 @@
 $(document).ready(function($) {
 	$('textarea').autosize();
 	$('.banner').getTwitterFeed("stojg", 10, false);
-	prettyPrint();
 });
 
 (function($){
