@@ -1,5 +1,38 @@
 <?php require 'partials/header.php'; ?>
+<style>
+	div.each-movie {
+		clear:both;
+	}
+	div.each-movie a {
+		color: #000;
+		text-decoration: none;
+	}
+	div.movie-cover {
+		float:left;
+	}
 
+	div.movie_rating {
+		display: none;
+	}
+	div.each-row {
+		font-size:10px;
+		width: 600px;
+	}
+	div.movie-info h3 {
+		color: #000 !important;
+	}
+	div.movie-info {
+		padding-left: 150px;
+	}
+	div.gold-sched {
+		background-color: gold;
+	}
+
+	div.titanxc-sched {
+		background-color: #999;
+	}
+	.div 
+</style>
 <div class="row">
 	<div class="span8 offset2">
 		<h1>Reading Cinema</h1>
@@ -10,12 +43,10 @@
 	<div class="span8 offset2">
 		<article>
 			<header>
-				<h2>
-					Courteney Place
-				</h2>	
+				<h2>Courteney Place</h2>	
 			</header>
 			<?php
-# http://readingcinemas.co.nz/displaysession/showSessionTimeByLoctaion/Courtenay%20Centr/rating
+# http://readingcinemas.co.nz/displaysession/showSessionTimeByLoctaion/Courtenay%20Centr/
 			// create a new cURL resource
 $ch = curl_init();
 // set URL and other appropriate options

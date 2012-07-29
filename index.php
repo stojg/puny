@@ -208,6 +208,14 @@ $app->get('/login/', function() use($app) {
 })->name('login');
 
 /**
+ * Display the login form
+ * 
+ */
+$app->get('/reading/', function() use($app) {
+	$app->render('reading.php');
+})->name('reading');
+
+/**
  * Check the login information
  * 
  * @todo move the login method out of the User model
