@@ -1,7 +1,10 @@
     </div> <!-- /container -->
+    <!--
     <script src="<?php echo THEME_URL; ?>js/jquery-1.7.2.min.js"></script>
     <script src="<?php echo THEME_URL; ?>js/bootstrap.min.js"></script>
     <script src="<?php echo THEME_URL; ?>js/site.min.js"></script>
+	-->
+	<script src="<?php echo THEME_URL; ?>js/all.js"></script>
     <?php require TEMPLATE_PATH.'partials/google-analytics.php'; ?>
     <?php require TEMPLATE_PATH.'partials/gauges-analytics.php'; ?>
     <!-- Place this render call where appropriate -->
