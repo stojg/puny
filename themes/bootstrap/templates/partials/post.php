@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row-fluid">
     <div class="span8 offset2">
       <article>
         <header>

@@ -24,48 +24,6 @@ body {
 	line-height: 23px;
 }
 
-@media (min-width: 979px) { 
-	body {
-    	padding-top: 80px;
-	}
-}
-
-@media (max-width: 640px) { 
-	.navbar-search {
-		display: none;
-	}
-}
-
-.banner {
-	position: absolute;
-	top: 40px;
-	left: 0;
-	right: 0;
-	background: #2c2c2c;
-	border-top: 1px solid #000;
-	border-bottom: 1px solid #000;
-}
-
-@media (max-width: 980px) {
-  .banner {
-	top: 48px;
-  }
-}
-
-.banner .inner {
-	height: 20px;
-	overflow: hidden;
-	position: relative;
-}
-
-.feed {
-	position: absolute;
-	font: 10px "Droid Sans Mono";
-	color: #666;
-	width: 100%;
-	display: block;
-}
-
 .inner ul,
 .inner li {
 	list-style: none;
@@ -87,7 +45,98 @@ body {
 	height: 23px;
 }
 
-.u2 {
-	display: block;
-	height: 46px;
+h1 {
+	font-size: 30px;
+	line-height: 32px;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+	
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	h1 {
+		font-size: 22px;
+		line-height: 24px;
+	}
+
+	h2 {
+		font-size: 18px;
+		line-height: 24px;
+	}
+
+	h3 {
+		font-size: 16px;
+		line-height: 24px;
+	}
+
+	body {
+		font-size: 14px;
+		line-height: 21px;
+	}
+
+	pre {
+		padding: 6px;
+		line-height: 20px;
+	}
+
+	pre code {
+		font-size: 12px;
+	}
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	h1 {
+		font-size: 18px;
+		line-height: 19px;
+		
+	}
+
+	h2 {
+		font-size: 15px;
+		line-height: 19px;
+	}
+
+	h3 {
+		font-size: 13px;
+		line-height: 19px;
+	}
+
+	body {
+		font-size: 13px;
+		line-height: 19px;
+	}
+
+	pre {
+		padding: 4px;
+		line-height: 15px;
+	}
+
+	pre code {
+		font-size: 10px;
+	}
+	
+	.navbar .nav {
+		font-size: 14px;
+	}
+
+	.navbar .nav > li > a {
+		padding-left: 5px;
+		padding-right: 5px;
+
+	}
+}
+
+@media (max-width: 655px) {
+	.navbar-search {
+		display: none;
+	}
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
 }
