@@ -42,8 +42,11 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
               <ul class="dropdown-menu">
+                <?php if(isset($post)) { ?>
                 <li><a href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit Page</a></li>
+                <?php } ?>
                 <li><a href="<?php echo $app->urlFor('add'); ?>">Add Page</a></li>
+                <li><a href="<?php echo $app->urlFor('instagram'); ?>">Instagram</a></li>
                 <li class="divider"></li>
                 <li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
               </ul>

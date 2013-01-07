@@ -79,6 +79,30 @@ function getPosts(Slim $app, $limit=false) {
 	return $blog->getPosts($limit);
 }
 
+function apiCall($url, $postData = array()) {
+	$ch = curl_init();
+	curl_setopt_array($ch, array(
+        CURLOPT_URL => $url,
+        CURLOPT_HEADER => 0,
+        CURLOPT_RETURNTRANSFER => TRUE,
+        CURLOPT_TIMEOUT => 10,
+    ));
+    if($postData) {
+    	curl_setopt($ch, CURLOPT_POST, count($postData));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));	
+    }
+	if(!$rawResult = curl_exec($ch)) {
+        throw new Exception(curl_error($ch));
+    }
+	curl_close($ch);
+    
+    $response = json_decode($rawResult, true);
+	if(isset($response['error_type'])) {
+		throw new Exception('API call: '.$response['error_type'].' - '.$response['error_message']);
+	}
+ 	return $response;
+}
+
 /** 
  * This function can be used as middleware to lock 
  * certain routes.
@@ -198,6 +222,44 @@ $app->post('/edit/:url', $locked(), function ($url) use($app, $savePost) {
 	$app->flash('info', 'Post have been saved');
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
+
+/**
+ * Display images from my instagram so that I can post them
+ * 
+ */
+$app->get('/instagram/', $locked(), function() use($app) {
+	if(!isset($_SESSION['instagram']) || !isset($_SESSION['instagram']['access_token'])) {
+		$app->redirect($app->urlFor('instagram_auth'));
+	}	
+	$apiURL = 'https://api.instagram.com/v1/users/'.$_SESSION['instagram']['user']['id'].'/media/recent/?access_token='.$_SESSION['instagram']['access_token'];
+	$feed = apiCall($apiURL);
+	$app->render('instagram.php', array('images' => $feed['data']));
+})->name('instagram');
+
+/**
+ * To the oAuth with instagram
+ */
+$app->get('/instagram/auth/', $locked(), function () use($app) {
+	$protocol = (isset($_SERVER["HTTP"]) && $_SERVER["HTTP"])?'https://':'http://';
+	$redirectURL = $protocol.$_SERVER['HTTP_HOST'].$app->urlFor('instagram_auth');
+
+	$oauthCode = $app->request()->params('code');
+	if(!$oauthCode) {
+		$authURL = 'https://api.instagram.com/oauth/authorize/?client_id='.INSTAGRAM_CLIENT_ID.'&redirect_uri='.$redirectURL.'&response_type=code';
+		return $app->redirect($authURL);	
+	}
+	$postData = array(
+		'client_id' => INSTAGRAM_CLIENT_ID,
+		'client_secret' => INSTAGRAM_CLIENT_SECRET,
+		'grant_type' => 'authorization_code',
+		'redirect_uri' => $redirectURL,
+		'code' => $oauthCode,
+	);
+ 	$_SESSION['instagram'] = apiCall('https://api.instagram.com/oauth/access_token', $postData);
+ 	$app->redirect($app->urlFor('instagram'));
+})->name('instagram_auth');
+
+
 
 /**
  * Display the login form
