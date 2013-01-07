@@ -14,16 +14,16 @@
 			
 			<div class="control-group">	
 				<div class="controls">
-					<input type="text" class="input span4" placeholder="Username" id="username" name="username">
+					<input tabindex="1" type="email" class="input span4" placeholder="Username" id="username" name="username">
 				</div>
 			</div>
 			<div class="control-group">
 				<div class="controls">
-					<input type="password" class="input span4" placeholder="Password" name="password">
+					<input tabindex="2" type="password" class="input span4" placeholder="Password" name="password">
 				</div>
 			</div>
 			<div class="control-group">
-				<input type="submit" class="btn pull-right" value="Sign in">
+				<input tabindex="3" type="submit" class="btn pull-right" value="Sign in">
 			</div>
 		
 		</form>
