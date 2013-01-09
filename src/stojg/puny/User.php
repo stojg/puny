@@ -1,10 +1,26 @@
 <?php
-namespace stojg\puny\models;
+
+namespace stojg\puny;
+
 /**
  * Represents a user of the site, logged in or not doesn't matter.
  *
  */
 class User {
+
+	/**
+	 * Checks if the current user is an admin
+	 *
+	 * @param  Slim  $app
+	 * @return boolean
+	 */
+	public static function is_logged_in() {
+		static $user = null;
+		if($user === null) {
+			$user = new User();
+		}
+		return $user->valid();
+	}
 
 	/**
 	 *
@@ -87,4 +103,5 @@ class User {
 		}
 		return true;
 	}
+
 }

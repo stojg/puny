@@ -13,7 +13,7 @@ class ViewHelper extends \Slim_Middleware {
 	 */
 	public function call() {
 		$this->app->view()->appendData(array(
-			'user' => new \stojg\puny\models\User(),
+			'user' => new \stojg\puny\User(),
 			'app' => $this->app
 		));
 

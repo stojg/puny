@@ -1,22 +1,13 @@
 <?php
 // Alias the namespace
-use \stojg\puny as s;
+use \stojg\puny as puny;
 
 // get the configuration
 require 'config.php';
 // Use composer autoloader
 require 'vendor/autoload.php';
-// Instagram API
-require 'libs/InstagramAPI.php';
 
-/**
- * Startup the session
- *
- * @todo see if this be skipped so non admin don't have to get 
- * a session
- */
-session_cache_limiter(false);
-session_start();
+puny\Puny::start_session(7200);
 
 /**
  * Get a new shiny Slim application
@@ -28,117 +19,36 @@ $app = new Slim(array(
 ));
 
 /**
- * Add a middleware to all routes.
- * It will add commonly accessed variables to the templates
+ * Add a middleware to all routes. Adding commonly accessed variables to the
+ * view.
  */
-$app->add(new s\helpers\ViewHelper());
-
-setupSession(7200);
-
-/**
- * Start a session with a specific timeout
- *
- * @param  int $seconds - the time out in seconds
- * @return void
- */
-function setupSession($timeout=1800) {
-	ini_set("session.gc_maxlifetime", $timeout); 
-	if(isset($_SESSION['lastSeen']) ) {
-		$heartbeatAgo = time() - $_SESSION['lastSeen'];
-		$timeLeft = $timeout-$heartbeatAgo;
-		if($timeLeft<0) {
-			$_SESSION = array();
-		}
-	}
-	$_SESSION['lastSeen'] = time();
-}
-
-/**
- * Checks if the current user is an admin
- * 
- * @param  Slim  $app
- * @return boolean
- */
-function isAdmin($app) {
-	static $user = null;
-	if($user === null) {
-		$user = new s\models\User($app);
-	}
-	return $user = $user->valid();
-}
-
-/**
- * 
- * @param  Slim   $app [description]
- * @param  int    $limit [description]
- * @return array
- */
-function getPosts(Slim $app, $limit=false) {
-	$blog = new s\models\Blog('posts/');
-	if(isAdmin($app)) {
-		return $blog->getAllPosts($limit);
-	}
-	return $blog->getPosts($limit);
-}
-
-/**
- * Get the protocol and host for the current site
- *
- * ex 'https://test.com/'
- *
- * @return string
- */
-function protocolAndHost() {
-	if(isset($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTOCOL']) == 'https') {
-		return "https://".$_SERVER['HTTP_HOST'];
-	}
-	if(isset($_SERVER['SSL']) || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')) {
-		return "https://".$_SERVER['HTTP_HOST'];
-	}
-	return "http://".$_SERVER['HTTP_HOST'];
-}
+$app->add(new puny\helpers\ViewHelper());
 
 /** 
- * This function can be used as middleware to lock 
- * certain routes.
+ * This is a Slim middleware route that prevents non logged in visitors to
+ * access that route
  */
 $locked = function () use($app) {
     return function () use ($app) {
-		if(!isAdmin($app)) {
+		if(!puny\User::is_logged_in()) {
 			$app->redirect($app->urlFor('login'));
 		}
     };
 };
 
 /**
- * savePost saves / creates a post
- * 
- * @param Slim_Http_Request $request
- * @param \stojg\puny\models\Post $post
- */
-$savePost = function(Slim_Http_Request $request, s\models\Post $post) {
-	$post->setContent($request->post('content'))
-		->setTitle($request->post('title'))
-		->setDate($request->post('date'))
-		->setCategories($request->post('categories'))
-		->setDraft($request->post('draft'))
-		->save('posts');
-};
-
-/**
  * This is the index page
  */
 $app->get('/', function () use($app) {
-	$posts = getPosts($app, 5);
+	$posts = puny\Blog::get_posts(5);
 	$app->render('home.php', array('posts' => $posts));
 })->name('index');
 
 /**
- * Route for a single post
- * 
+ * Show a single post
  */
 $app->get('/blog/:url', function ($url) use($app) {
-	$blog = new s\models\Blog('posts/');
+	$blog = new puny\Blog('posts/');
 	$post = $blog->getPost($url);
 	if(!$post->exists()) {
 		$app->notFound();
@@ -165,7 +75,7 @@ $app->get('/archives', function () use($app) {
  * Show all posts tagged with a category
  */
 $app->get('/category/:name', function ($name) use($app) {
-	$blog = new s\models\Blog('posts/');
+	$blog = new puny\Blog('posts/');
 	$app->render('category.php', array(
 		'category' => $name,
 		'posts' => $blog->getCategory($name, null, isAdmin($app)),
@@ -177,7 +87,7 @@ $app->get('/category/:name', function ($name) use($app) {
  * Display a form for adding a new post
  */
 $app->get('/add', $locked(), function() use($app) {
-	$post = new s\models\Post('posts/');
+	$post = new puny\Post('posts/');
 	$app->render('edit.php', array(
 		'post' => $post,
 		'title' => 'New post'
@@ -186,46 +96,40 @@ $app->get('/add', $locked(), function() use($app) {
 
 /**
  * Add a new post to the datastore
-  *
  */
-$app->post('/add', $locked(), function() use($app, $savePost) {
-	$req = $app->request();
-	$post = new s\models\Post('posts/');
-	$savePost($app->request(), $post);
+$app->post('/add', $locked(), function() use($app) {
+	$post = new puny\Post('posts/');
+	puny\Post::save_post($app->request(), $post);
 	$app->flash('info', 'You just create a new post.');
 	$app->redirect($app->urlFor('edit', array('url' => $post->basename())));
 });
 
 /**
  * Display the form for editing a post
- * 
  */
 $app->get('/edit/:url', $locked(), function ($url) use($app) {
-	$blog = new s\models\Blog('posts/');
+	$blog = new puny\Blog('posts/');
 	$app->render('edit.php', array('post' => $blog->getPost($url, false)));
 })->name('edit');
 
 /**
  * Save a currently edited post
- * 
  */
-$app->post('/edit/:url', $locked(), function ($url) use($app, $savePost) {
-	$req = $app->request();
-	$blog = new s\models\Blog('posts/');
+$app->post('/edit/:url', $locked(), function ($url) use($app) {
+	$blog = new puny\Blog('posts/');
 	$post = $blog->getPost($url, false);
-	$savePost($app->request(), $post);
+	puny\Post::save_post($app->request(), $post);
 	$app->flash('info', 'Post have been saved');
 	$app->redirect($app->urlFor('edit', array('url'=>$post->basename())));
 });
 
 /**
  * Display images from my instagram so that I can post them
- * 
  */
 $app->get('/instagram/', $locked(), function() use($app) {
-	$instagram = new InstagramAPI(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
+	$instagram = new puny\api\Instagram(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
 	if(!$instagram->isLoggedIn()) {
-		$app->redirect($app->urlFor('instagram_auth'));
+		return $app->redirect($app->urlFor('instagram_auth'));
 	}
 	$media = $instagram->getRecentMedia();
 	$app->render('instagram.php', array('images' => $media['data']));
@@ -235,8 +139,8 @@ $app->get('/instagram/', $locked(), function() use($app) {
  * Do the oAuth login with instagram
  */
 $app->get('/instagram/auth/', $locked(), function () use($app) {
-	$callback = protocolAndHost().$app->urlFor('instagram_auth');
-	$instagram = new InstagramAPI(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
+	$callback = puny\Puny::protocol_and_host().$app->urlFor('instagram_auth');
+	$instagram = new puny\api\Instagram(INSTAGRAM_CLIENT_ID, INSTAGRAM_CLIENT_SECRET);
 	// No code, authorize the app and get a code
 	if(!$app->request()->params('code')) {
 		return $app->redirect($instagram->getAuthURL($callback));
@@ -249,27 +153,16 @@ $app->get('/instagram/auth/', $locked(), function () use($app) {
 
 /**
  * Display the login form
- * 
  */
 $app->get('/login/', function() use($app) {
 	$app->render('login.php');
 })->name('login');
 
 /**
- * Display the login form
- * 
- */
-$app->get('/reading/', function() use($app) {
-	$app->render('reading.php');
-})->name('reading');
-
-/**
- * Check the login information
- * 
- * @todo move the login method out of the User model
+ * Login the user
  */
 $app->post('/login/', function() use($app) {
-	$user = new s\models\User();
+	$user = new puny\User();
 	if(!$user->login($app)) {
 		$app->flash('error', 'Login failed!');
 		$app->redirect($app->urlFor('login'));
@@ -279,11 +172,9 @@ $app->post('/login/', function() use($app) {
 
 /**
  * Logout the user
- *
- * @todo move the logout method out of the User model
  */
 $app->get('/logout', function() use($app) {
-	$user = new s\models\User();
+	$user = new puny\User();
 	$user->logout();
 	$app->redirect($app->request()->getRootUri());
 })->name('logout');

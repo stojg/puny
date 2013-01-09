@@ -1,9 +1,11 @@
 <?php
 
+namespace stojg\puny\api;
+
 /**
  * Simple oauth login to Instagram's API
  */
-class InstagramAPI {
+class Instagram {
 
 	/**
 	 *
@@ -90,7 +92,7 @@ class InstagramAPI {
 	 * @param string $url
 	 * @param array $postData
 	 * @return array
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	protected function request($url, $postData = array()) {
 		$ch = curl_init();
@@ -105,17 +107,17 @@ class InstagramAPI {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
 		}
 		if(!$rawResult = curl_exec($ch)) {
-			throw new Exception(curl_error($ch));
+			throw new \Exception(curl_error($ch));
 		}
 		curl_close($ch);
 		$response = json_decode($rawResult, true);
 
 		if(isset($response['error_type'])) {
-			throw new Exception('API call: '.$response['error_type'].' - '.$response['error_message']);
+			throw new \Exception('API call: '.$response['error_type'].' - '.$response['error_message']);
 		}
 
 		if(isset($response['meta']['error_type'])) {
-			throw new Exception('API call: '.$response['meta']['error_type'].' - '.$response['meta']['error_message']);
+			throw new \Exception('API call: '.$response['meta']['error_type'].' - '.$response['meta']['error_message']);
 		}
 		return $response;
 	}

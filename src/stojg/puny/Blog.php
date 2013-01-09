@@ -1,6 +1,6 @@
 <?php
 
-namespace stojg\puny\models;
+namespace stojg\puny;
 
 /**
  * Represents a Blog with a bunch of posts. This is in practice a directory with
@@ -32,6 +32,20 @@ class Blog {
 	protected $id = null;
 
 	/**
+	 *
+	 * @param  int $limit [description]
+	 * @return array
+	 */
+	public static function get_posts($limit = false) {
+		$blog = new Blog('posts/');
+		// Get drafted posts as well
+		if(User::is_logged_in()) {
+			return $blog->getAllPosts($limit);
+		}
+		return $blog->getPosts($limit);
+	}
+
+	/**
 	 * The directory of all posts
 	 *
 	 * @param string $directory
@@ -50,7 +64,7 @@ class Blog {
 	public function getID() {
 		if(!$this->id) {
 			foreach($this->files as $file) {
-				$this->id = sha1($this->id.sha1_file($file));
+				$this->id = sha1($this->id . sha1_file($file));
 			}
 		}
 		return $this->id;
@@ -62,13 +76,13 @@ class Blog {
 	 * @param int $limit - if false return all
 	 * @return array|\Stojg\Puny\Post
 	 */
-	public function getPosts($limit=false) {
+	public function getPosts($limit = false) {
 		return $this->filterPosts($limit, function(Post $post) {
-			return !$post->getDraft();
-		});
+							return !$post->getDraft();
+						});
 	}
 
-	public function getAllPosts($limit=false) {
+	public function getAllPosts($limit = false) {
 		return $this->filterPosts($limit);
 	}
 
@@ -76,16 +90,16 @@ class Blog {
 		$posts = array();
 		$i = 0;
 		foreach($this->files as $filename) {
-			if($limit && $i>=$limit) {
+			if($limit && $i >= $limit) {
 				return $posts;
 			}
 			$post = new Post($filename);
 			if(!is_callable($filter) || $filter($post)) {
 				$posts[] = new \stojg\puny\Cached($post);
-				$i++;	
+				$i++;
 			}
 		}
-		return $posts;	
+		return $posts;
 	}
 
 	/**
@@ -94,7 +108,7 @@ class Blog {
 	 * @param string $categoryName
 	 * @return array
 	 */
-	public function getCategory($categoryName, $limit = null, $viewDrafts=false) {
+	public function getCategory($categoryName, $limit = null, $viewDrafts = false) {
 		return $this->filterPosts($limit, function(Post $post) use($categoryName, $viewDrafts) {
 			if(!in_array($categoryName, $post->getCategories())) {
 				return false;
@@ -109,14 +123,15 @@ class Blog {
 
 	/**
 	 * Returns one single post
-	 * 
+	 *
 	 * @param string $name
 	 * @return \stojg\puny\models\Post|\stojg\puny\Cached
 	 */
-	public function getPost($name, $cached=true) {
+	public function getPost($name, $cached = true) {
 		if(!$cached) {
-			return new Post($this->directory.$name.Post::extension());
+			return new Post($this->directory . $name . Post::extension());
 		}
-		return new \stojg\puny\Cached(new Post($this->directory.$name.Post::extension()));
+		return new \stojg\puny\Cached(new Post($this->directory . $name . Post::extension()));
 	}
+
 }

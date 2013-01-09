@@ -1,5 +1,5 @@
 <?php
-namespace stojg\puny\models;
+namespace stojg\puny;
 
 /**
  * Represents a single post
@@ -74,6 +74,21 @@ class Post {
 
 	public static function extension() {
 		return self::$file_extension;
+	}
+
+	/**
+	 * savePost saves / creates a post
+	 *
+	 * @param Slim_Http_Request $request
+	 * @param \stojg\puny\Post $post
+	 */
+	public static function save_post(\Slim_Http_Request $request, Post $post) {
+		$post->setContent($request->post('content'))
+			->setTitle($request->post('title'))
+			->setDate($request->post('date'))
+			->setCategories($request->post('categories'))
+			->setDraft($request->post('draft'))
+			->save('posts');
 	}
 	
 	/**
