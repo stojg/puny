@@ -1,10 +1,10 @@
 <?php
-// Alias the namespace
+// alias the namespace
 use \stojg\puny as puny;
 
 // get the configuration
 require 'config.php';
-// Use composer autoloader
+// use composer autoloader
 require 'vendor/autoload.php';
 
 puny\Puny::start_session(7200);
@@ -150,6 +150,35 @@ $app->get('/instagram/auth/', $locked(), function () use($app) {
 	// go back to the instagram page
  	$app->redirect($app->urlFor('instagram'));
 })->name('instagram_auth');
+
+/**
+ * Display images from my facebook so that I can post them
+ */
+$app->get('/facebook/', $locked(), function() use($app) {
+	$facebook = new puny\api\Facebook(FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET);
+	if(!$facebook->isLoggedIn()) {
+		return $app->redirect($app->urlFor('facebook_auth'));
+	}
+	$media = $facebook->getRecentMedia();
+	$app->render('facebook.php', array('images' => $media['data']));
+})->name('facebook');
+
+/**
+ * Do the oAuth login with facebook
+ */
+$app->get('/facebook/auth/', $locked(), function () use($app) {
+	$callback = puny\Puny::protocol_and_host().$app->urlFor('facebook_auth');
+	$faceboook = new puny\api\Facebook(FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET);
+	// No code, authorize the app and get a code
+	if(!$app->request()->params('code')) {
+		return $app->redirect($faceboook->getAuthURL($callback));
+	}
+	// get access token
+	$faceboook->login($app->request()->params('code'), $callback);
+	// go back to the instagram page
+ 	$app->redirect($app->urlFor('facebook'));
+})->name('facebook_auth');
+
 
 /**
  * Display the login form

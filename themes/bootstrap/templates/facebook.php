@@ -2,23 +2,17 @@
 <?php require 'partials/header.php'; ?>
 <div class="span12">
 	<div class="row">
-		<h1>Instagrams</h1>
+		<h1>Facebook</h1>
 		<ul class="thumbnails">
 		<?php
 			$i = 0;
-			foreach($images as $image) { 
+			foreach($images as $img) { 
 			$i++;
 		?>
-  			<li class="span3">
-				<?php $img = $image['images']['low_resolution']; ?>
-				<div>
-					<img src="<?php echo $img['url']; ?>" height="<?php echo $img['height']; ?>" width="<?php echo $img['width']; ?>" class="img-polaroid" />
-					<small>
-					<a href="<?php echo $image['link']; ?>">Post</a> 
-					
-      				<?php echo $image['caption']['text'];?>
-      				
-      				</small>
+  			<li class="span4">
+				<div class="img-polaroid">
+					<img src="<?php echo $img['src_big']; ?>" height="<?php echo $img['src_big_height']; ?>" width="<?php echo $img['src_big_width']; ?>" />
+					<br /><small><?php echo date('Y-m-d H:i', $img['created']); ?> <?php echo $img['caption'];?></small>
 				</div>
 			</li>
 			<?php if($i%3==0) { ?>

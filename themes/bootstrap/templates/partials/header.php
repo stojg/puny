@@ -47,6 +47,7 @@
                 <?php } ?>
                 <li><a href="<?php echo $app->urlFor('add'); ?>">Add Page</a></li>
                 <li><a href="<?php echo $app->urlFor('instagram'); ?>">Instagram</a></li>
+				<li><a href="<?php echo $app->urlFor('facebook'); ?>">Facebook</a></li>
                 <li class="divider"></li>
                 <li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
               </ul>

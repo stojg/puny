@@ -27,3 +27,7 @@ define('TEMPLATE_PATH', BASE_PATH . '/themes/'.THEME_NAME.'/templates/');
 define('INSTAGRAM_CLIENT_ID', 'weweqwqeqweqwe');
 // Instagram client secret
 define('INSTAGRAM_CLIENT_SECRET', 'qweqwewqeqwe');
+// Facebook client ID
+define('FACEBOOK_CLIENT_ID', 'weweqwqeqweqwe');
+// Facebook client secret
+define('FACEBOOK_CLIENT_SECRET', 'qweqwewqeqwe');
