@@ -78,14 +78,26 @@ class Blog {
 	 */
 	public function getPosts($limit = false) {
 		return $this->filterPosts($limit, function(Post $post) {
-							return !$post->getDraft();
-						});
+			return !$post->getDraft();
+		});
 	}
 
+	/**
+	 * Returns an array of \Stojg\Puny\Post and include the drafts
+	 *
+	 * @param int $limit - if false return all
+	 * @return array|\Stojg\Puny\Post
+	 */
 	public function getAllPosts($limit = false) {
 		return $this->filterPosts($limit);
 	}
 
+	/**
+	 *
+	 * @param int $limit
+	 * @param callable $filter
+	 * @return array|\stojg\puny\Cached
+	 */
 	protected function filterPosts($limit, $filter = null) {
 		$posts = array();
 		$i = 0;
@@ -133,5 +145,4 @@ class Blog {
 		}
 		return new \stojg\puny\Cached(new Post($this->directory . $name . Post::extension()));
 	}
-
 }
