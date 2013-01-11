@@ -77,7 +77,7 @@ $app->get('/category/:name', function ($name) use($app) {
 	$blog = new puny\Blog('posts/');
 	$app->render('category.php', array(
 		'category' => $name,
-		'posts' => $blog->getCategory($name, null, isAdmin($app)),
+		'posts' => $blog->getCategory($name, null, puny\User::is_logged_in($app)),
 		'title' => $name,
 	));
 })->name('category');

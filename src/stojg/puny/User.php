@@ -11,7 +11,6 @@ class User {
 	/**
 	 * Checks if the current user is an admin
 	 *
-	 * @param  Slim  $app
 	 * @return boolean
 	 */
 	public static function is_logged_in() {
