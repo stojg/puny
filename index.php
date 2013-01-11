@@ -63,10 +63,9 @@ $app->get('/blog/:url', function ($url) use($app) {
 /**
  * A list of all the posts that has been made
  */
-$app->get('/archives', function () use($app) {	
-	$posts = getPosts($app);
+$app->get('/archives', function () use($app) {
 	$app->render('archives.php', array(
-		'posts' => $posts,
+		'posts' => puny\Blog::get_posts(),
 		'title' => 'Archives',
 	));
 })->name('archives');
