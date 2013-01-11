@@ -65,7 +65,7 @@ $app->get('/blog/:url', function ($url) use($app) {
  */
 $app->get('/archives', function () use($app) {
 	$app->render('archives.php', array(
-		'posts' => puny\Blog::get_posts(),
+		'posts' => puny\Blog::get_posts(false),
 		'title' => 'Archives',
 	));
 })->name('archives');
