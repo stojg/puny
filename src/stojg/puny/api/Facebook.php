@@ -87,7 +87,7 @@ class Facebook {
 
 		$_SESSION['facebook_token'] = $params['access_token'];
 		$userResponse = $this->request("https://graph.facebook.com/me?access_token=" . $params['access_token']);
-		$_SESSION['facebook_user_id'] = $response['id'];
+		$_SESSION['facebook_user_id'] = $userResponse['id'];
 	}
 
 	//me/albums
