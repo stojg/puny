@@ -236,7 +236,7 @@ class Post {
 	 */
 	public function getDescription($maxWords=30) {
 
-		$text=strip_tags($this->getContent());
+		$text=strip_tags($this->getContentHTML());
 		$text = trim(preg_replace("/\s+/"," ",$text));
 
 		$word_array = explode(" ", $text);
