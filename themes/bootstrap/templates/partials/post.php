@@ -13,7 +13,7 @@
             </time>
             <?php if(count($post->getCategories())) { echo ' &mdash; ';} ?>
             <?php foreach($post->getCategories() as $category) { ?>
-            <a class='category' href="<? echo $app->urlFor('category', array('name'=>$category)); ?>">
+            <a class='category' href="<?php echo $app->urlFor('category', array('name'=>$category)); ?>">
               <?php echo $category; ?>
             </a>
             <?php } ?>
