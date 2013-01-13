@@ -179,6 +179,22 @@ $app->get('/facebook/auth/', $locked(), function () use($app) {
 })->name('facebook_auth');
 
 
+$app->get('/download', $locked(), function() use($app) {
+	if(!is_dir('assets')) { mkdir('assets/thumbs', 0775, true); }
+	$link = $app->request()->get('link');
+	copy($link , './assets/'.basename($link));
+	$app->redirect($app->urlFor('files'));
+})->name('download');
+
+$app->get('/files',  $locked(), function() use($app) {
+	$files = array();
+	foreach(glob('./assets/*') as $file) {
+		if(!is_file($file)) { continue; }
+		$files[] = new puny\File($file);
+	}
+	$app->render('files.php', array('files'=>$files));
+})->name('files');
+
 /**
  * Display the login form
  */

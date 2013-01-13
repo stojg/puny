@@ -12,7 +12,11 @@
   			<li class="span4">
 				<div class="img-polaroid">
 					<img src="<?php echo $img['src_big']; ?>" height="<?php echo $img['src_big_height']; ?>" width="<?php echo $img['src_big_width']; ?>" />
-					<br /><small><?php echo date('Y-m-d H:i', $img['created']); ?> <?php echo $img['caption'];?></small>
+					<br />
+					<small>
+						<a href="<?php echo $app->urlFor('download'); ?>?link=<?php echo urlencode($img['src_big']);?>">Download</a>
+						<?php echo $img['caption'];?>
+					</small>
 				</div>
 			</li>
 			<?php if($i%3==0) { ?>

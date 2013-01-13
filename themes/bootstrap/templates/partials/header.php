@@ -46,11 +46,13 @@
                 <li><a href="<?php echo $app->urlFor('edit', array('url'=>$post->basename())); ?>">Edit Page</a></li>
                 <?php } ?>
                 <li><a href="<?php echo $app->urlFor('add'); ?>">Add Page</a></li>
+				<li><a href="<?php echo $app->urlFor('files'); ?>">Files</a></li>
                 <li><a href="<?php echo $app->urlFor('instagram'); ?>">Instagram</a></li>
 				<li><a href="<?php echo $app->urlFor('facebook'); ?>">Facebook</a></li>
                 <li class="divider"></li>
                 <li><a href="<?php echo $app->urlFor('logout'); ?>">Logout</a></li>
               </ul>
+			
             <?php } else { ?>
               <li>
                 <a href="<?php echo $app->urlFor('login'); ?>">Sign in</a>
